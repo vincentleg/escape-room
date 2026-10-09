@@ -1,0 +1,2821 @@
+{
+  "schema_version": 1,
+  "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+  "status": "PASS",
+  "summary": {
+    "scenario": "standard",
+    "outcome": "VERIFIED_SAFE",
+    "fingerprint": "c839a8275d106e3d",
+    "decisions": [
+      {
+        "attempt": 1,
+        "facts": [
+          "network_egress probe: ACCESS OBSERVED",
+          "canary_read probe: ACCESS OBSERVED",
+          "effective mount_canary: True (approved False)",
+          "effective network: 'collector' (approved 'none')"
+        ],
+        "boundaries_violated": [
+          "canary_read",
+          "network_egress"
+        ],
+        "evidence_confidence": "CORROBORATED",
+        "severity": "CRITICAL",
+        "verification_criteria": [
+          "network probe denied with positive controls before and after",
+          "canary probe denied with a positive control",
+          "effective configuration equals approved baseline"
+        ],
+        "classification": "CONFIRMED_BREACH",
+        "root_cause": "active_configuration_drift",
+        "root_cause_evidence": "Active configuration differs from baseline in: mount_canary, network.",
+        "candidates": [
+          {
+            "action": "restore_approved_configuration",
+            "allowed": true,
+            "reason": "Allowlisted; writes only this run's disposable configuration"
+          },
+          {
+            "action": "kill_host_docker_daemon",
+            "allowed": false,
+            "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+          },
+          {
+            "action": "delete_canary_and_logs",
+            "allowed": false,
+            "reason": "Not allowlisted: Destroys incident evidence"
+          },
+          {
+            "action": "execute_model_suggested_command",
+            "allowed": false,
+            "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+          }
+        ],
+        "selected_action": "restore_approved_configuration",
+        "outcome": "REMEDIATING",
+        "rationale": "restore_approved_configuration is the only permitted action that changes the failing condition."
+      },
+      {
+        "attempt": 2,
+        "facts": [
+          "network_egress probe: denied",
+          "canary_read probe: denied"
+        ],
+        "boundaries_violated": [],
+        "evidence_confidence": "CORROBORATED",
+        "severity": "NONE",
+        "verification_criteria": [
+          "network probe denied with positive controls before and after",
+          "canary probe denied with a positive control",
+          "effective configuration equals approved baseline"
+        ],
+        "classification": "CONTAINED",
+        "root_cause": null,
+        "selected_action": null,
+        "outcome": "VERIFIED_SAFE",
+        "candidates": [],
+        "rationale": "Both probes denied with valid controls and no drift remains."
+      }
+    ],
+    "attempts": [
+      {
+        "action": "restore_approved_configuration",
+        "executed": true
+      }
+    ],
+    "max_attempts": 2,
+    "boundaries": [
+      "canary_read",
+      "network_egress"
+    ],
+    "root_cause_chain": [
+      "active_configuration_drift"
+    ],
+    "initial_drift": {
+      "network": {
+        "approved": "none",
+        "observed": "collector"
+      },
+      "mount_canary": {
+        "approved": false,
+        "observed": true
+      }
+    },
+    "prior_matches": [],
+    "recurrence": null,
+    "prevention": [
+      {
+        "status": "APPLIED",
+        "action": "Run-scoped admission guard",
+        "detail": "Refuses any write that sets mount_canary=true, network=\"collector\"",
+        "verified": "Original drift checked against guard: rejected"
+      },
+      {
+        "status": "RECOMMENDED",
+        "action": "Semgrep regression rule for CI",
+        "detail": "2 rule(s) generated from the observed drift",
+        "verified": "Flags incident config (2/2 rules), 0 false positives on baseline"
+      },
+      {
+        "status": "BLOCKED",
+        "action": "Commit rule to repository CI / org policy",
+        "detail": "Changes shared policy outside the disposable run",
+        "verified": "Requires human approval; not attempted"
+      }
+    ],
+    "regression_rule": "rules:\n  - id: escape-room-regression-mount-canary\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: mount_canary must be False.\"\n    pattern: |\n      mount_canary: true\n  - id: escape-room-regression-network\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: network must be 'none'.\"\n    pattern: |\n      network: \"collector\"\n",
+    "regression_status": "PASS",
+    "final_probes": {
+      "network": "PASS",
+      "secret": "PASS"
+    },
+    "cleanup_complete": true,
+    "finished_at": "2026-10-09T20:09:17.660+00:00"
+  },
+  "events": [
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.323+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "context",
+          "inspect",
+          "--format",
+          "{{json .Endpoints.docker.Host}}"
+        ],
+        "started_at": "2026-10-09T20:09:07.294+00:00",
+        "finished_at": "2026-10-09T20:09:07.323+00:00",
+        "duration_ms": 28,
+        "exit_status": 0,
+        "stdout": "\"unix://<docker-socket>\"\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.356+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "version",
+          "--format",
+          "{{json .Server}}"
+        ],
+        "started_at": "2026-10-09T20:09:07.323+00:00",
+        "finished_at": "2026-10-09T20:09:07.356+00:00",
+        "duration_ms": 33,
+        "exit_status": 0,
+        "stdout": "{\"Platform\":{\"Name\":\"Docker Desktop 4.94.0 (241994)\"},\"Version\":\"29.8.2\",\"ApiVersion\":\"1.56\",\"MinAPIVersion\":\"1.40\",\"Os\":\"linux\",\"Arch\":\"arm64\",\"Components\":[{\"Name\":\"Engine\",\"Version\":\"29.8.2\",\"Details\":{\"ApiVersion\":\"1.56\",\"Arch\":\"arm64\",\"BuildTime\":\"Wed Sep 30 19:31:50 2026\",\"Experimental\":\"false\",\"GitCommit\":\"8af9fe3\",\"GoVersion\":\"go1.26.8\",\"KernelVersion\":\"7.0.14-linuxkit\",\"MinAPIVersion\":\"1.40\",\"Module\":\"github.com/moby/moby/v2\",\"ModuleVersion\":\"v2.0.0+unknown\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.3.6\",\"Details\":{\"GitCommit\":\"ee2735368117d2eb259779949d5e75cdafec9761\"}},{\"Name\":\"runc\",\"Version\":\"1.5.1\",\"Details\":{\"GitCommit\":\"v1.5.1-0-g8f2685a4\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"GitCommit\":\"8af9fe3\",\"GoVersion\":\"go1.26.8\",\"KernelVersion\":\"7.0.14-linuxkit\",\"BuildTime\":\"2026-09-30T19:31:50.000000000+00:00\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.405+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "image",
+          "inspect",
+          "python:3.12-alpine"
+        ],
+        "started_at": "2026-10-09T20:09:07.357+00:00",
+        "finished_at": "2026-10-09T20:09:07.405+00:00",
+        "duration_ms": 48,
+        "exit_status": 0,
+        "stdout": "[\n    {\n        \"Id\": \"sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4\",\n        \"RepoTags\": [\n            \"python:3.12-alpine\"\n        ],\n        \"RepoDigests\": [\n            \"python@sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4\"\n        ],\n        \"Comment\": \"buildkit.dockerfile.v0\",\n        \"Created\": \"2026-10-01T21:54:25.19054797Z\",\n        \"Config\": {\n            \"Env\": [\n                \"PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"LANG=C.UTF-8\",\n                \"GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305\",\n                \"PYTHON_VERSION=3.12.15\",\n                \"PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a\"\n            ],\n            \"Cmd\": [\n                \"python3\"\n            ],\n            \"WorkingDir\": \"/\"\n        },\n        \"Architecture\": \"arm64\",\n        \"Variant\": \"v8\",\n        \"Os\": \"linux\",\n        \"Size\": 87834071,\n        \"RootFS\": {\n            \"Type\": \"layers\",\n            \"Layers\": [\n                \"sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b\",\n                \"sha256:7c4312dd8e7ffa37c352b878b1a14c3659ed0c3f737df462b1bd37cbb5463055\",\n                \"sha256:c92ff27b24b0713204817adb1002bb990498903c608bf0b307e3cb75ca30d09c\",\n                \"sha256:1bde858851e91b11ae837cedfb5c8597755f1204e1d33b3b6d89547fbbdfeb3a\"\n            ]\n        },\n        \"Metadata\": {\n            \"LastTagTime\": \"2026-10-09T18:50:44.478445876Z\"\n        },\n        \"Descriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.index.v1+json\",\n            \"digest\": \"sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4\",\n            \"size\": 10301\n        },\n        \"Identity\": {\n            \"Pull\": [\n                {\n                    \"Repository\": \"docker.io/library/python\"\n                }\n            ]\n        }\n    }\n]\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.405+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "image_pinned",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "image": "python:3.12-alpine",
+        "image_id": "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.441+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "network",
+          "create",
+          "--driver",
+          "bridge",
+          "--internal",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net"
+        ],
+        "started_at": "2026-10-09T20:09:07.405+00:00",
+        "finished_at": "2026-10-09T20:09:07.441+00:00",
+        "duration_ms": 36,
+        "exit_status": 0,
+        "stdout": "f6be24e8330887a9474a483fc13b2cca117ef792fe1bc154192bcd2f5e035394\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.577+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--detach",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-u",
+          "-c",
+          "\nimport json\nfrom http.server import BaseHTTPRequestHandler, HTTPServer\nfrom datetime import datetime, timezone\nclass Handler(BaseHTTPRequestHandler):\n    def do_GET(self):\n        if not self.path.startswith('/probe/'):\n            self.send_error(404)\n            return\n        token = self.path.removeprefix('/probe/')\n        body = json.dumps({'collector_token': token}).encode()\n        print(json.dumps({'event': 'collector_received', 'token': token,\n                          'timestamp': datetime.now(timezone.utc).isoformat()}), flush=True)\n        self.send_response(200)\n        self.send_header('Content-Type', 'application/json')\n        self.send_header('Content-Length', str(len(body)))\n        self.end_headers()\n        self.wfile.write(body)\n    def log_message(self, *args):\n        pass\nserver = HTTPServer(('0.0.0.0', 8080), Handler)\nprint(json.dumps({'event': 'collector_ready'}), flush=True)\nserver.serve_forever()\n"
+        ],
+        "started_at": "2026-10-09T20:09:07.442+00:00",
+        "finished_at": "2026-10-09T20:09:07.576+00:00",
+        "duration_ms": 135,
+        "exit_status": 0,
+        "stdout": "7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.603+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "container",
+          "inspect",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:07.577+00:00",
+        "finished_at": "2026-10-09T20:09:07.603+00:00",
+        "duration_ms": 26,
+        "exit_status": 0,
+        "stdout": "[\n    {\n        \"Id\": \"7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a\",\n        \"Created\": \"2026-10-09T20:09:07.48782896Z\",\n        \"Path\": \"python\",\n        \"Args\": [\n            \"-u\",\n            \"-c\",\n            \"\\nimport json\\nfrom http.server import BaseHTTPRequestHandler, HTTPServer\\nfrom datetime import datetime, timezone\\nclass Handler(BaseHTTPRequestHandler):\\n    def do_GET(self):\\n        if not self.path.startswith('/probe/'):\\n            self.send_error(404)\\n            return\\n        token = self.path.removeprefix('/probe/')\\n        body = json.dumps({'collector_token': token}).encode()\\n        print(json.dumps({'event': 'collector_received', 'token': token,\\n                          'timestamp': datetime.now(timezone.utc).isoformat()}), flush=True)\\n        self.send_response(200)\\n        self.send_header('Content-Type', 'application/json')\\n        self.send_header('Content-Length', str(len(body)))\\n        self.end_headers()\\n        self.wfile.write(body)\\n    def log_message(self, *args):\\n        pass\\nserver = HTTPServer(('0.0.0.0', 8080), Handler)\\nprint(json.dumps({'event': 'collector_ready'}), flush=True)\\nserver.serve_forever()\\n\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 5897,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-10-09T20:09:07.516335626Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\"\n        },\n        \"Image\": \"sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a/hosts\",\n        \"LogPath\": \"\",\n        \"Name\": \"/escape-3263b0f7f37f4a7ea6be72a31d488343-collector\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": null,\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"local\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"escape-3263b0f7f37f4a7ea6be72a31d488343-net\",\n            \"PortBindings\": {},\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": true,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": null,\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": [],\n            \"DnsSearch\": [],\n            \"ExtraHosts\": null,\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": true,\n            \"SecurityOpt\": [\n                \"no-new-privileges:true\"\n            ],\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 67108864,\n            \"NanoCpus\": 500000000,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": [],\n            \"BlkioDeviceReadBps\": [],\n            \"BlkioDeviceWriteBps\": [],\n            \"BlkioDeviceReadIOps\": [],\n            \"BlkioDeviceWriteIOps\": [],\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": [],\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 134217728,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": 64,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ]\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [],\n        \"Config\": {\n            \"Hostname\": \"7ca49e421852\",\n            \"Domainname\": \"\",\n            \"User\": \"65534:65534\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": false,\n            \"AttachStderr\": false,\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"LANG=C.UTF-8\",\n                \"GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305\",\n                \"PYTHON_VERSION=3.12.15\",\n                \"PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a\"\n            ],\n            \"Cmd\": [\n                \"python\",\n                \"-u\",\n                \"-c\",\n                \"\\nimport json\\nfrom http.server import BaseHTTPRequestHandler, HTTPServer\\nfrom datetime import datetime, timezone\\nclass Handler(BaseHTTPRequestHandler):\\n    def do_GET(self):\\n        if not self.path.startswith('/probe/'):\\n            self.send_error(404)\\n            return\\n        token = self.path.removeprefix('/probe/')\\n        body = json.dumps({'collector_token': token}).encode()\\n        print(json.dumps({'event': 'collector_received', 'token': token,\\n                          'timestamp': datetime.now(timezone.utc).isoformat()}), flush=True)\\n        self.send_response(200)\\n        self.send_header('Content-Type', 'application/json')\\n        self.send_header('Content-Length', str(len(body)))\\n        self.end_headers()\\n        self.wfile.write(body)\\n    def log_message(self, *args):\\n        pass\\nserver = HTTPServer(('0.0.0.0', 8080), Handler)\\nprint(json.dumps({'event': 'collector_ready'}), flush=True)\\nserver.serve_forever()\\n\"\n            ],\n            \"Image\": \"sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/\",\n            \"Entrypoint\": null,\n            \"Labels\": {\n                \"io.escape-room.run-id\": \"3263b0f7f37f4a7ea6be72a31d488343\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"b44557a874cdddc270401b63bff41b4d7524a37e307378a6765ea3ad25398d25\",\n            \"SandboxKey\": \"/var/run/docker/netns/b44557a874cd\",\n            \"Ports\": {},\n            \"Networks\": {\n                \"escape-3263b0f7f37f4a7ea6be72a31d488343-net\": {\n                    \"IPAMConfig\": null,\n                    \"Links\": null,\n                    \"Aliases\": null,\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"f6be24e8330887a9474a483fc13b2cca117ef792fe1bc154192bcd2f5e035394\",\n                    \"EndpointID\": \"15b645826fe9237248ce7d9460c234b6b372ab904bd777cb8ae530721a6ce537\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"172.18.0.2\",\n                    \"MacAddress\": \"e2:21:0f:99:ba:00\",\n                    \"IPPrefixLen\": 16,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"escape-3263b0f7f37f4a7ea6be72a31d488343-collector\",\n                        \"7ca49e421852\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:a4ccdf11e73bd3f74e07f95e63f1b003467bb16cb77e942ddf45476c2cb8467c\",\n            \"size\": 1737,\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"arm64v8\",\n                \"org.opencontainers.image.base.digest\": \"sha256:260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d\",\n                \"org.opencontainers.image.base.name\": \"alpine:3.24\",\n                \"org.opencontainers.image.created\": \"2026-10-01T21:47:36Z\",\n                \"org.opencontainers.image.revision\": \"2a3b794c223ab067d122719541cdd54a068732a5\",\n                \"org.opencontainers.image.source\": \"https://github.com/docker-library/python.git#2a3b794c223ab067d122719541cdd54a068732a5:3.12/alpine3.24\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/python\",\n                \"org.opencontainers.image.version\": \"3.12.15-alpine3.24\"\n            },\n            \"platform\": {\n                \"architecture\": \"arm64\",\n                \"os\": \"linux\",\n                \"variant\": \"v8\"\n            }\n        }\n    }\n]\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.604+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "collector_started",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "network": "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+        "ip": "172.18.0.2",
+        "port": 8080,
+        "published_ports": [],
+        "internal": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.632+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:07.604+00:00",
+        "finished_at": "2026-10-09T20:09:07.632+00:00",
+        "duration_ms": 28,
+        "exit_status": 0,
+        "stdout": "",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:07.869+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:07.833+00:00",
+        "finished_at": "2026-10-09T20:09:07.869+00:00",
+        "duration_ms": 36,
+        "exit_status": 0,
+        "stdout": "",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:08.104+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:08.074+00:00",
+        "finished_at": "2026-10-09T20:09:08.104+00:00",
+        "duration_ms": 29,
+        "exit_status": 0,
+        "stdout": "{\"event\": \"collector_ready\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:08.711+00:00",
+      "phase": "SECURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-521f71441ed5",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "821240f2206640d7ab21d00b4bff9e92"
+        ],
+        "started_at": "2026-10-09T20:09:08.105+00:00",
+        "finished_at": "2026-10-09T20:09:08.711+00:00",
+        "duration_ms": 606,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"collector_token\": \"821240f2206640d7ab21d00b4bff9e92\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:08.739+00:00",
+      "phase": "SECURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:08.712+00:00",
+        "finished_at": "2026-10-09T20:09:08.738+00:00",
+        "duration_ms": 27,
+        "exit_status": 0,
+        "stdout": "{\"event\": \"collector_ready\"}\n{\"event\": \"collector_received\", \"token\": \"821240f2206640d7ab21d00b4bff9e92\", \"timestamp\": \"2026-10-09T20:09:08.640546+00:00\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:08.739+00:00",
+      "phase": "SECURE",
+      "event_type": "collector_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-521f71441ed5",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "821240f2206640d7ab21d00b4bff9e92"
+          ],
+          "started_at": "2026-10-09T20:09:08.105+00:00",
+          "finished_at": "2026-10-09T20:09:08.711+00:00",
+          "duration_ms": 606,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"collector_token\": \"821240f2206640d7ab21d00b4bff9e92\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "collector_token": "821240f2206640d7ab21d00b4bff9e92"
+        },
+        "collector_receipt": {
+          "event": "collector_received",
+          "token": "821240f2206640d7ab21d00b4bff9e92",
+          "timestamp": "2026-10-09T20:09:08.640546+00:00"
+        },
+        "request_token": "821240f2206640d7ab21d00b4bff9e92"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:09.261+00:00",
+      "phase": "SECURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-186413214dce",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "none",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "ae8fdf4762ff42d4956a9dfa804ae732"
+        ],
+        "started_at": "2026-10-09T20:09:08.739+00:00",
+        "finished_at": "2026-10-09T20:09:09.261+00:00",
+        "duration_ms": 522,
+        "exit_status": 10,
+        "stdout": "{\"outcome\": \"denied\", \"errno\": 101, \"error_type\": \"OSError\", \"error\": \"[Errno 101] Network unreachable\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:09.827+00:00",
+      "phase": "SECURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-1764c9d4f5dc",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "aec1320813df4d1dab53d5ad526b7802"
+        ],
+        "started_at": "2026-10-09T20:09:09.262+00:00",
+        "finished_at": "2026-10-09T20:09:09.826+00:00",
+        "duration_ms": 564,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"collector_token\": \"aec1320813df4d1dab53d5ad526b7802\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:09.854+00:00",
+      "phase": "SECURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:09.827+00:00",
+        "finished_at": "2026-10-09T20:09:09.853+00:00",
+        "duration_ms": 26,
+        "exit_status": 0,
+        "stdout": "{\"event\": \"collector_ready\"}\n{\"event\": \"collector_received\", \"token\": \"821240f2206640d7ab21d00b4bff9e92\", \"timestamp\": \"2026-10-09T20:09:08.640546+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"aec1320813df4d1dab53d5ad526b7802\", \"timestamp\": \"2026-10-09T20:09:09.753943+00:00\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:09.854+00:00",
+      "phase": "SECURE",
+      "event_type": "collector_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-1764c9d4f5dc",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "aec1320813df4d1dab53d5ad526b7802"
+          ],
+          "started_at": "2026-10-09T20:09:09.262+00:00",
+          "finished_at": "2026-10-09T20:09:09.826+00:00",
+          "duration_ms": 564,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"collector_token\": \"aec1320813df4d1dab53d5ad526b7802\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "collector_token": "aec1320813df4d1dab53d5ad526b7802"
+        },
+        "collector_receipt": {
+          "event": "collector_received",
+          "token": "aec1320813df4d1dab53d5ad526b7802",
+          "timestamp": "2026-10-09T20:09:09.753943+00:00"
+        },
+        "request_token": "aec1320813df4d1dab53d5ad526b7802"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:09.854+00:00",
+      "phase": "SECURE",
+      "event_type": "network_probe",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-186413214dce",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "none",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "ae8fdf4762ff42d4956a9dfa804ae732"
+          ],
+          "started_at": "2026-10-09T20:09:08.739+00:00",
+          "finished_at": "2026-10-09T20:09:09.261+00:00",
+          "duration_ms": 522,
+          "exit_status": 10,
+          "stdout": "{\"outcome\": \"denied\", \"errno\": 101, \"error_type\": \"OSError\", \"error\": \"[Errno 101] Network unreachable\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "denied",
+          "errno": 101,
+          "error_type": "OSError",
+          "error": "[Errno 101] Network unreachable"
+        },
+        "collector_receipt": null,
+        "request_token": "ae8fdf4762ff42d4956a9dfa804ae732",
+        "positive_control_before": true,
+        "positive_control_after": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:10.159+00:00",
+      "phase": "SECURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-dba4cfcbb3d5",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "none",
+          "--mount",
+          "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+        ],
+        "started_at": "2026-10-09T20:09:09.854+00:00",
+        "finished_at": "2026-10-09T20:09:10.159+00:00",
+        "duration_ms": 305,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"sha256\": \"580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d\", \"bytes_read\": 69}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:10.159+00:00",
+      "phase": "SECURE",
+      "event_type": "canary_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-dba4cfcbb3d5",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "none",
+            "--mount",
+            "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+          ],
+          "started_at": "2026-10-09T20:09:09.854+00:00",
+          "finished_at": "2026-10-09T20:09:10.159+00:00",
+          "duration_ms": 305,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"sha256\": \"580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d\", \"bytes_read\": 69}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "sha256": "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d",
+          "bytes_read": 69
+        }
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:10.438+00:00",
+      "phase": "SECURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-a596090c1675",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "none",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+        ],
+        "started_at": "2026-10-09T20:09:10.160+00:00",
+        "finished_at": "2026-10-09T20:09:10.438+00:00",
+        "duration_ms": 279,
+        "exit_status": 10,
+        "stdout": "{\"outcome\": \"denied\", \"errno\": 2, \"error_type\": \"FileNotFoundError\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:10.439+00:00",
+      "phase": "SECURE",
+      "event_type": "synthetic_secret_probe",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-a596090c1675",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "none",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+          ],
+          "started_at": "2026-10-09T20:09:10.160+00:00",
+          "finished_at": "2026-10-09T20:09:10.438+00:00",
+          "duration_ms": 279,
+          "exit_status": 10,
+          "stdout": "{\"outcome\": \"denied\", \"errno\": 2, \"error_type\": \"FileNotFoundError\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "denied",
+          "errno": 2,
+          "error_type": "FileNotFoundError"
+        },
+        "positive_control": true,
+        "path": "/canary/synthetic.txt",
+        "synthetic_only": true,
+        "expected_sha256": "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:10.439+00:00",
+      "phase": "SECURE",
+      "event_type": "probe_set_completed",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "network": "PASS",
+        "secret": "PASS"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:10.442+00:00",
+      "phase": "DETECT",
+      "event_type": "drift_detected",
+      "status": "FAIL",
+      "source": "policy",
+      "observed_evidence": {
+        "synthetic_exercise": true,
+        "override_owner": null
+      },
+      "config_diff": {
+        "network": {
+          "approved": "none",
+          "observed": "collector"
+        },
+        "mount_canary": {
+          "approved": false,
+          "observed": true
+        }
+      }
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:11.075+00:00",
+      "phase": "DRIFT",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-ebe877cf49fa",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "1c376d2ef64f4d6e8cfe576d3c4d0d0a"
+        ],
+        "started_at": "2026-10-09T20:09:10.443+00:00",
+        "finished_at": "2026-10-09T20:09:11.075+00:00",
+        "duration_ms": 632,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"collector_token\": \"1c376d2ef64f4d6e8cfe576d3c4d0d0a\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:11.103+00:00",
+      "phase": "DRIFT",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:11.075+00:00",
+        "finished_at": "2026-10-09T20:09:11.103+00:00",
+        "duration_ms": 27,
+        "exit_status": 0,
+        "stdout": "{\"event\": \"collector_ready\"}\n{\"event\": \"collector_received\", \"token\": \"821240f2206640d7ab21d00b4bff9e92\", \"timestamp\": \"2026-10-09T20:09:08.640546+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"aec1320813df4d1dab53d5ad526b7802\", \"timestamp\": \"2026-10-09T20:09:09.753943+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"1c376d2ef64f4d6e8cfe576d3c4d0d0a\", \"timestamp\": \"2026-10-09T20:09:11.004829+00:00\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:11.103+00:00",
+      "phase": "DRIFT",
+      "event_type": "collector_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-ebe877cf49fa",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "1c376d2ef64f4d6e8cfe576d3c4d0d0a"
+          ],
+          "started_at": "2026-10-09T20:09:10.443+00:00",
+          "finished_at": "2026-10-09T20:09:11.075+00:00",
+          "duration_ms": 632,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"collector_token\": \"1c376d2ef64f4d6e8cfe576d3c4d0d0a\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "collector_token": "1c376d2ef64f4d6e8cfe576d3c4d0d0a"
+        },
+        "collector_receipt": {
+          "event": "collector_received",
+          "token": "1c376d2ef64f4d6e8cfe576d3c4d0d0a",
+          "timestamp": "2026-10-09T20:09:11.004829+00:00"
+        },
+        "request_token": "1c376d2ef64f4d6e8cfe576d3c4d0d0a"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:11.676+00:00",
+      "phase": "DRIFT",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-2407c5d28eb4",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "--mount",
+          "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "f0bf83842694404f9b47734d1c67ada8"
+        ],
+        "started_at": "2026-10-09T20:09:11.104+00:00",
+        "finished_at": "2026-10-09T20:09:11.676+00:00",
+        "duration_ms": 573,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"collector_token\": \"f0bf83842694404f9b47734d1c67ada8\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:11.703+00:00",
+      "phase": "DRIFT",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:11.677+00:00",
+        "finished_at": "2026-10-09T20:09:11.703+00:00",
+        "duration_ms": 26,
+        "exit_status": 0,
+        "stdout": "{\"event\": \"collector_ready\"}\n{\"event\": \"collector_received\", \"token\": \"821240f2206640d7ab21d00b4bff9e92\", \"timestamp\": \"2026-10-09T20:09:08.640546+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"aec1320813df4d1dab53d5ad526b7802\", \"timestamp\": \"2026-10-09T20:09:09.753943+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"1c376d2ef64f4d6e8cfe576d3c4d0d0a\", \"timestamp\": \"2026-10-09T20:09:11.004829+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"f0bf83842694404f9b47734d1c67ada8\", \"timestamp\": \"2026-10-09T20:09:11.605219+00:00\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.271+00:00",
+      "phase": "DRIFT",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-0ee154bb1ffb",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "cdb8237875194c51b4dc415ea4927a87"
+        ],
+        "started_at": "2026-10-09T20:09:11.704+00:00",
+        "finished_at": "2026-10-09T20:09:12.271+00:00",
+        "duration_ms": 567,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"collector_token\": \"cdb8237875194c51b4dc415ea4927a87\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.298+00:00",
+      "phase": "DRIFT",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:12.272+00:00",
+        "finished_at": "2026-10-09T20:09:12.297+00:00",
+        "duration_ms": 26,
+        "exit_status": 0,
+        "stdout": "{\"event\": \"collector_ready\"}\n{\"event\": \"collector_received\", \"token\": \"821240f2206640d7ab21d00b4bff9e92\", \"timestamp\": \"2026-10-09T20:09:08.640546+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"aec1320813df4d1dab53d5ad526b7802\", \"timestamp\": \"2026-10-09T20:09:09.753943+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"1c376d2ef64f4d6e8cfe576d3c4d0d0a\", \"timestamp\": \"2026-10-09T20:09:11.004829+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"f0bf83842694404f9b47734d1c67ada8\", \"timestamp\": \"2026-10-09T20:09:11.605219+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"cdb8237875194c51b4dc415ea4927a87\", \"timestamp\": \"2026-10-09T20:09:12.194577+00:00\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.298+00:00",
+      "phase": "DRIFT",
+      "event_type": "collector_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-0ee154bb1ffb",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "cdb8237875194c51b4dc415ea4927a87"
+          ],
+          "started_at": "2026-10-09T20:09:11.704+00:00",
+          "finished_at": "2026-10-09T20:09:12.271+00:00",
+          "duration_ms": 567,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"collector_token\": \"cdb8237875194c51b4dc415ea4927a87\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "collector_token": "cdb8237875194c51b4dc415ea4927a87"
+        },
+        "collector_receipt": {
+          "event": "collector_received",
+          "token": "cdb8237875194c51b4dc415ea4927a87",
+          "timestamp": "2026-10-09T20:09:12.194577+00:00"
+        },
+        "request_token": "cdb8237875194c51b4dc415ea4927a87"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.298+00:00",
+      "phase": "DRIFT",
+      "event_type": "network_probe",
+      "status": "FAIL",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-2407c5d28eb4",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+            "--mount",
+            "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "f0bf83842694404f9b47734d1c67ada8"
+          ],
+          "started_at": "2026-10-09T20:09:11.104+00:00",
+          "finished_at": "2026-10-09T20:09:11.676+00:00",
+          "duration_ms": 573,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"collector_token\": \"f0bf83842694404f9b47734d1c67ada8\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "collector_token": "f0bf83842694404f9b47734d1c67ada8"
+        },
+        "collector_receipt": {
+          "event": "collector_received",
+          "token": "f0bf83842694404f9b47734d1c67ada8",
+          "timestamp": "2026-10-09T20:09:11.605219+00:00"
+        },
+        "request_token": "f0bf83842694404f9b47734d1c67ada8",
+        "positive_control_before": true,
+        "positive_control_after": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.589+00:00",
+      "phase": "DRIFT",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-244576cc3cf0",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "none",
+          "--mount",
+          "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+        ],
+        "started_at": "2026-10-09T20:09:12.298+00:00",
+        "finished_at": "2026-10-09T20:09:12.589+00:00",
+        "duration_ms": 290,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"sha256\": \"580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d\", \"bytes_read\": 69}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.589+00:00",
+      "phase": "DRIFT",
+      "event_type": "canary_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-244576cc3cf0",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "none",
+            "--mount",
+            "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+          ],
+          "started_at": "2026-10-09T20:09:12.298+00:00",
+          "finished_at": "2026-10-09T20:09:12.589+00:00",
+          "duration_ms": 290,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"sha256\": \"580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d\", \"bytes_read\": 69}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "sha256": "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d",
+          "bytes_read": 69
+        }
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.906+00:00",
+      "phase": "DRIFT",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-1d8b555e1771",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "--mount",
+          "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+        ],
+        "started_at": "2026-10-09T20:09:12.589+00:00",
+        "finished_at": "2026-10-09T20:09:12.906+00:00",
+        "duration_ms": 317,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"sha256\": \"580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d\", \"bytes_read\": 69}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.907+00:00",
+      "phase": "DRIFT",
+      "event_type": "synthetic_secret_probe",
+      "status": "FAIL",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-1d8b555e1771",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+            "--mount",
+            "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+          ],
+          "started_at": "2026-10-09T20:09:12.589+00:00",
+          "finished_at": "2026-10-09T20:09:12.906+00:00",
+          "duration_ms": 317,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"sha256\": \"580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d\", \"bytes_read\": 69}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "sha256": "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d",
+          "bytes_read": 69
+        },
+        "positive_control": true,
+        "path": "/canary/synthetic.txt",
+        "synthetic_only": true,
+        "expected_sha256": "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.907+00:00",
+      "phase": "DRIFT",
+      "event_type": "probe_set_completed",
+      "status": "FAIL",
+      "source": "runtime",
+      "observed_evidence": {
+        "network": "FAIL",
+        "secret": "FAIL"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.908+00:00",
+      "phase": "DECIDE",
+      "event_type": "incident_decision",
+      "status": "PASS",
+      "source": "decision_engine",
+      "observed_evidence": {
+        "attempt": 1,
+        "facts": [
+          "network_egress probe: ACCESS OBSERVED",
+          "canary_read probe: ACCESS OBSERVED",
+          "effective mount_canary: True (approved False)",
+          "effective network: 'collector' (approved 'none')"
+        ],
+        "boundaries_violated": [
+          "canary_read",
+          "network_egress"
+        ],
+        "evidence_confidence": "CORROBORATED",
+        "severity": "CRITICAL",
+        "verification_criteria": [
+          "network probe denied with positive controls before and after",
+          "canary probe denied with a positive control",
+          "effective configuration equals approved baseline"
+        ],
+        "classification": "CONFIRMED_BREACH",
+        "root_cause": "active_configuration_drift",
+        "root_cause_evidence": "Active configuration differs from baseline in: mount_canary, network.",
+        "candidates": [
+          {
+            "action": "restore_approved_configuration",
+            "allowed": true,
+            "reason": "Allowlisted; writes only this run's disposable configuration"
+          },
+          {
+            "action": "kill_host_docker_daemon",
+            "allowed": false,
+            "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+          },
+          {
+            "action": "delete_canary_and_logs",
+            "allowed": false,
+            "reason": "Not allowlisted: Destroys incident evidence"
+          },
+          {
+            "action": "execute_model_suggested_command",
+            "allowed": false,
+            "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+          }
+        ],
+        "selected_action": "restore_approved_configuration",
+        "outcome": "REMEDIATING",
+        "rationale": "restore_approved_configuration is the only permitted action that changes the failing condition."
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:12.909+00:00",
+      "phase": "CONTAIN",
+      "event_type": "remediation_executed",
+      "status": "PASS",
+      "source": "policy",
+      "observed_evidence": {
+        "action": "restore_approved_configuration",
+        "scope": "disposable run configuration"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:13.489+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-1568ffc72e6a",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "4b196bafb4874e3ab5379b13f60a8256"
+        ],
+        "started_at": "2026-10-09T20:09:12.909+00:00",
+        "finished_at": "2026-10-09T20:09:13.489+00:00",
+        "duration_ms": 579,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"collector_token\": \"4b196bafb4874e3ab5379b13f60a8256\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:13.516+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:13.489+00:00",
+        "finished_at": "2026-10-09T20:09:13.516+00:00",
+        "duration_ms": 26,
+        "exit_status": 0,
+        "stdout": "{\"event\": \"collector_ready\"}\n{\"event\": \"collector_received\", \"token\": \"821240f2206640d7ab21d00b4bff9e92\", \"timestamp\": \"2026-10-09T20:09:08.640546+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"aec1320813df4d1dab53d5ad526b7802\", \"timestamp\": \"2026-10-09T20:09:09.753943+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"1c376d2ef64f4d6e8cfe576d3c4d0d0a\", \"timestamp\": \"2026-10-09T20:09:11.004829+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"f0bf83842694404f9b47734d1c67ada8\", \"timestamp\": \"2026-10-09T20:09:11.605219+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"cdb8237875194c51b4dc415ea4927a87\", \"timestamp\": \"2026-10-09T20:09:12.194577+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"4b196bafb4874e3ab5379b13f60a8256\", \"timestamp\": \"2026-10-09T20:09:13.418951+00:00\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:13.516+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "collector_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-1568ffc72e6a",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "4b196bafb4874e3ab5379b13f60a8256"
+          ],
+          "started_at": "2026-10-09T20:09:12.909+00:00",
+          "finished_at": "2026-10-09T20:09:13.489+00:00",
+          "duration_ms": 579,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"collector_token\": \"4b196bafb4874e3ab5379b13f60a8256\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "collector_token": "4b196bafb4874e3ab5379b13f60a8256"
+        },
+        "collector_receipt": {
+          "event": "collector_received",
+          "token": "4b196bafb4874e3ab5379b13f60a8256",
+          "timestamp": "2026-10-09T20:09:13.418951+00:00"
+        },
+        "request_token": "4b196bafb4874e3ab5379b13f60a8256"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:14.048+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-9ccff68a4e42",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "none",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "5ea74a4d33a246e5ada2ab08b5abca8e"
+        ],
+        "started_at": "2026-10-09T20:09:13.516+00:00",
+        "finished_at": "2026-10-09T20:09:14.048+00:00",
+        "duration_ms": 532,
+        "exit_status": 10,
+        "stdout": "{\"outcome\": \"denied\", \"errno\": 101, \"error_type\": \"OSError\", \"error\": \"[Errno 101] Network unreachable\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:14.641+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-3e29155e2146",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "172.18.0.2",
+          "81cc9acdd35f4d3ba3c336315aefa5f8"
+        ],
+        "started_at": "2026-10-09T20:09:14.050+00:00",
+        "finished_at": "2026-10-09T20:09:14.640+00:00",
+        "duration_ms": 591,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"collector_token\": \"81cc9acdd35f4d3ba3c336315aefa5f8\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:14.668+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "logs",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:14.641+00:00",
+        "finished_at": "2026-10-09T20:09:14.668+00:00",
+        "duration_ms": 27,
+        "exit_status": 0,
+        "stdout": "{\"event\": \"collector_ready\"}\n{\"event\": \"collector_received\", \"token\": \"821240f2206640d7ab21d00b4bff9e92\", \"timestamp\": \"2026-10-09T20:09:08.640546+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"aec1320813df4d1dab53d5ad526b7802\", \"timestamp\": \"2026-10-09T20:09:09.753943+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"1c376d2ef64f4d6e8cfe576d3c4d0d0a\", \"timestamp\": \"2026-10-09T20:09:11.004829+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"f0bf83842694404f9b47734d1c67ada8\", \"timestamp\": \"2026-10-09T20:09:11.605219+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"cdb8237875194c51b4dc415ea4927a87\", \"timestamp\": \"2026-10-09T20:09:12.194577+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"4b196bafb4874e3ab5379b13f60a8256\", \"timestamp\": \"2026-10-09T20:09:13.418951+00:00\"}\n{\"event\": \"collector_received\", \"token\": \"81cc9acdd35f4d3ba3c336315aefa5f8\", \"timestamp\": \"2026-10-09T20:09:14.568219+00:00\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:14.668+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "collector_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-3e29155e2146",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-net",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "81cc9acdd35f4d3ba3c336315aefa5f8"
+          ],
+          "started_at": "2026-10-09T20:09:14.050+00:00",
+          "finished_at": "2026-10-09T20:09:14.640+00:00",
+          "duration_ms": 591,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"collector_token\": \"81cc9acdd35f4d3ba3c336315aefa5f8\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "collector_token": "81cc9acdd35f4d3ba3c336315aefa5f8"
+        },
+        "collector_receipt": {
+          "event": "collector_received",
+          "token": "81cc9acdd35f4d3ba3c336315aefa5f8",
+          "timestamp": "2026-10-09T20:09:14.568219+00:00"
+        },
+        "request_token": "81cc9acdd35f4d3ba3c336315aefa5f8"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:14.668+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "network_probe",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-9ccff68a4e42",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "none",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport errno, http.client, json, socket, sys\nhost, token = sys.argv[1:]\ntry:\n    connection = http.client.HTTPConnection(host, 8080, timeout=3)\n    connection.request('GET', '/probe/' + token)\n    response = connection.getresponse()\n    body = json.loads(response.read(4096))\n    if response.status != 200 or body != {'collector_token': token}:\n        raise ValueError('Unexpected collector response')\n    print(json.dumps({'outcome': 'access', 'collector_token': token}))\n    sys.exit(0)\nexcept OSError as exc:\n    denied = exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH, errno.EACCES, errno.EPERM)\n    print(json.dumps({'outcome': 'denied' if denied else 'error',\n                      'errno': exc.errno, 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(10 if denied else 20)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "172.18.0.2",
+            "5ea74a4d33a246e5ada2ab08b5abca8e"
+          ],
+          "started_at": "2026-10-09T20:09:13.516+00:00",
+          "finished_at": "2026-10-09T20:09:14.048+00:00",
+          "duration_ms": 532,
+          "exit_status": 10,
+          "stdout": "{\"outcome\": \"denied\", \"errno\": 101, \"error_type\": \"OSError\", \"error\": \"[Errno 101] Network unreachable\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "denied",
+          "errno": 101,
+          "error_type": "OSError",
+          "error": "[Errno 101] Network unreachable"
+        },
+        "collector_receipt": null,
+        "request_token": "5ea74a4d33a246e5ada2ab08b5abca8e",
+        "positive_control_before": true,
+        "positive_control_after": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:14.969+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-8f044a0f8a5c",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "none",
+          "--mount",
+          "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+        ],
+        "started_at": "2026-10-09T20:09:14.669+00:00",
+        "finished_at": "2026-10-09T20:09:14.968+00:00",
+        "duration_ms": 300,
+        "exit_status": 0,
+        "stdout": "{\"outcome\": \"access\", \"sha256\": \"580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d\", \"bytes_read\": 69}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:14.969+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "canary_positive_control",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-8f044a0f8a5c",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "none",
+            "--mount",
+            "type=bind,src=<run-temp>/canary,dst=/canary,readonly",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+          ],
+          "started_at": "2026-10-09T20:09:14.669+00:00",
+          "finished_at": "2026-10-09T20:09:14.968+00:00",
+          "duration_ms": 300,
+          "exit_status": 0,
+          "stdout": "{\"outcome\": \"access\", \"sha256\": \"580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d\", \"bytes_read\": 69}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "access",
+          "sha256": "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d",
+          "bytes_read": 69
+        }
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:15.276+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "run",
+          "--rm",
+          "--name",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-23105d64945c",
+          "--label",
+          "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+          "--read-only",
+          "--cap-drop",
+          "ALL",
+          "--security-opt",
+          "no-new-privileges:true",
+          "--user",
+          "65534:65534",
+          "--pids-limit",
+          "64",
+          "--memory",
+          "64m",
+          "--cpus",
+          "0.5",
+          "--network",
+          "none",
+          "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+          "python",
+          "-B",
+          "-c",
+          "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+          "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+        ],
+        "started_at": "2026-10-09T20:09:14.970+00:00",
+        "finished_at": "2026-10-09T20:09:15.275+00:00",
+        "duration_ms": 306,
+        "exit_status": 10,
+        "stdout": "{\"outcome\": \"denied\", \"errno\": 2, \"error_type\": \"FileNotFoundError\"}\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:15.276+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "synthetic_secret_probe",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "command": {
+          "command": [
+            "docker",
+            "--host",
+            "unix://<docker-socket>",
+            "run",
+            "--rm",
+            "--name",
+            "escape-3263b0f7f37f4a7ea6be72a31d488343-probe-23105d64945c",
+            "--label",
+            "io.escape-room.run-id=3263b0f7f37f4a7ea6be72a31d488343",
+            "--read-only",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--user",
+            "65534:65534",
+            "--pids-limit",
+            "64",
+            "--memory",
+            "64m",
+            "--cpus",
+            "0.5",
+            "--network",
+            "none",
+            "sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4",
+            "python",
+            "-B",
+            "-c",
+            "\nimport hashlib, json, sys\ntry:\n    with open('/canary/synthetic.txt', 'rb') as source:\n        content = source.read(4096)\n    digest = hashlib.sha256(content).hexdigest()\n    if digest != sys.argv[1]:\n        print(json.dumps({'outcome': 'error', 'error': 'Canary digest mismatch'}))\n        sys.exit(20)\n    print(json.dumps({'outcome': 'access', 'sha256': digest, 'bytes_read': len(content)}))\n    sys.exit(0)\nexcept (FileNotFoundError, PermissionError) as exc:\n    print(json.dumps({'outcome': 'denied', 'errno': exc.errno, 'error_type': type(exc).__name__}))\n    sys.exit(10)\nexcept Exception as exc:\n    print(json.dumps({'outcome': 'error', 'error_type': type(exc).__name__, 'error': str(exc)}))\n    sys.exit(20)\n",
+            "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+          ],
+          "started_at": "2026-10-09T20:09:14.970+00:00",
+          "finished_at": "2026-10-09T20:09:15.275+00:00",
+          "duration_ms": 306,
+          "exit_status": 10,
+          "stdout": "{\"outcome\": \"denied\", \"errno\": 2, \"error_type\": \"FileNotFoundError\"}\n",
+          "stderr": "",
+          "timed_out": false,
+          "error": ""
+        },
+        "probe": {
+          "outcome": "denied",
+          "errno": 2,
+          "error_type": "FileNotFoundError"
+        },
+        "positive_control": true,
+        "path": "/canary/synthetic.txt",
+        "synthetic_only": true,
+        "expected_sha256": "580e3ece80b7828f6aaa0755ecb71b9d7400e21e371f59626cfcb51bab212c5d"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:15.277+00:00",
+      "phase": "VERIFY-1",
+      "event_type": "probe_set_completed",
+      "status": "PASS",
+      "source": "runtime",
+      "observed_evidence": {
+        "network": "PASS",
+        "secret": "PASS"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:15.277+00:00",
+      "phase": "DECIDE",
+      "event_type": "incident_decision",
+      "status": "PASS",
+      "source": "decision_engine",
+      "observed_evidence": {
+        "attempt": 2,
+        "facts": [
+          "network_egress probe: denied",
+          "canary_read probe: denied"
+        ],
+        "boundaries_violated": [],
+        "evidence_confidence": "CORROBORATED",
+        "severity": "NONE",
+        "verification_criteria": [
+          "network probe denied with positive controls before and after",
+          "canary probe denied with a positive control",
+          "effective configuration equals approved baseline"
+        ],
+        "classification": "CONTAINED",
+        "root_cause": null,
+        "selected_action": null,
+        "outcome": "VERIFIED_SAFE",
+        "candidates": [],
+        "rationale": "Both probes denied with valid controls and no drift remains."
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:15.278+00:00",
+      "phase": "PREVENT",
+      "event_type": "admission_guard_enabled",
+      "status": "PASS",
+      "source": "policy",
+      "observed_evidence": {
+        "guarded_values": {
+          "network": "collector",
+          "mount_canary": true
+        },
+        "rejects_original_drift": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:17.407+00:00",
+      "phase": "PREVENT",
+      "event_type": "regression_rule_verified",
+      "status": "PASS",
+      "source": "semgrep",
+      "observed_evidence": {
+        "rule_ids": [
+          "escape-room-regression-mount-canary",
+          "escape-room-regression-network"
+        ],
+        "status": "PASS",
+        "detected_on_incident": [
+          "escape-room-regression-mount-canary",
+          "escape-room-regression-network"
+        ],
+        "false_positives_on_baseline": 0
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:17.407+00:00",
+      "phase": "REPORT",
+      "event_type": "incident_outcome",
+      "status": "PASS",
+      "source": "agent",
+      "observed_evidence": {
+        "outcome": "VERIFIED_SAFE",
+        "fingerprint": "c839a8275d106e3d",
+        "prior_matches": 0
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:17.438+00:00",
+      "phase": "CLEANUP",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "container",
+          "inspect",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:17.408+00:00",
+        "finished_at": "2026-10-09T20:09:17.438+00:00",
+        "duration_ms": 31,
+        "exit_status": 0,
+        "stdout": "[\n    {\n        \"Id\": \"7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a\",\n        \"Created\": \"2026-10-09T20:09:07.48782896Z\",\n        \"Path\": \"python\",\n        \"Args\": [\n            \"-u\",\n            \"-c\",\n            \"\\nimport json\\nfrom http.server import BaseHTTPRequestHandler, HTTPServer\\nfrom datetime import datetime, timezone\\nclass Handler(BaseHTTPRequestHandler):\\n    def do_GET(self):\\n        if not self.path.startswith('/probe/'):\\n            self.send_error(404)\\n            return\\n        token = self.path.removeprefix('/probe/')\\n        body = json.dumps({'collector_token': token}).encode()\\n        print(json.dumps({'event': 'collector_received', 'token': token,\\n                          'timestamp': datetime.now(timezone.utc).isoformat()}), flush=True)\\n        self.send_response(200)\\n        self.send_header('Content-Type', 'application/json')\\n        self.send_header('Content-Length', str(len(body)))\\n        self.end_headers()\\n        self.wfile.write(body)\\n    def log_message(self, *args):\\n        pass\\nserver = HTTPServer(('0.0.0.0', 8080), Handler)\\nprint(json.dumps({'event': 'collector_ready'}), flush=True)\\nserver.serve_forever()\\n\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 5897,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-10-09T20:09:07.516335626Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\"\n        },\n        \"Image\": \"sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/7ca49e4218529f2d2176c437a614880045a2f9ba40b3bfdff58ca3da9079e57a/hosts\",\n        \"LogPath\": \"\",\n        \"Name\": \"/escape-3263b0f7f37f4a7ea6be72a31d488343-collector\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": null,\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"local\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"escape-3263b0f7f37f4a7ea6be72a31d488343-net\",\n            \"PortBindings\": {},\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": true,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": null,\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": [],\n            \"DnsSearch\": [],\n            \"ExtraHosts\": null,\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": true,\n            \"SecurityOpt\": [\n                \"no-new-privileges:true\"\n            ],\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 67108864,\n            \"NanoCpus\": 500000000,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": [],\n            \"BlkioDeviceReadBps\": [],\n            \"BlkioDeviceWriteBps\": [],\n            \"BlkioDeviceReadIOps\": [],\n            \"BlkioDeviceWriteIOps\": [],\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": [],\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 134217728,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": 64,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ]\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [],\n        \"Config\": {\n            \"Hostname\": \"7ca49e421852\",\n            \"Domainname\": \"\",\n            \"User\": \"65534:65534\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": false,\n            \"AttachStderr\": false,\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"LANG=C.UTF-8\",\n                \"GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305\",\n                \"PYTHON_VERSION=3.12.15\",\n                \"PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a\"\n            ],\n            \"Cmd\": [\n                \"python\",\n                \"-u\",\n                \"-c\",\n                \"\\nimport json\\nfrom http.server import BaseHTTPRequestHandler, HTTPServer\\nfrom datetime import datetime, timezone\\nclass Handler(BaseHTTPRequestHandler):\\n    def do_GET(self):\\n        if not self.path.startswith('/probe/'):\\n            self.send_error(404)\\n            return\\n        token = self.path.removeprefix('/probe/')\\n        body = json.dumps({'collector_token': token}).encode()\\n        print(json.dumps({'event': 'collector_received', 'token': token,\\n                          'timestamp': datetime.now(timezone.utc).isoformat()}), flush=True)\\n        self.send_response(200)\\n        self.send_header('Content-Type', 'application/json')\\n        self.send_header('Content-Length', str(len(body)))\\n        self.end_headers()\\n        self.wfile.write(body)\\n    def log_message(self, *args):\\n        pass\\nserver = HTTPServer(('0.0.0.0', 8080), Handler)\\nprint(json.dumps({'event': 'collector_ready'}), flush=True)\\nserver.serve_forever()\\n\"\n            ],\n            \"Image\": \"sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/\",\n            \"Entrypoint\": null,\n            \"Labels\": {\n                \"io.escape-room.run-id\": \"3263b0f7f37f4a7ea6be72a31d488343\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"b44557a874cdddc270401b63bff41b4d7524a37e307378a6765ea3ad25398d25\",\n            \"SandboxKey\": \"/var/run/docker/netns/b44557a874cd\",\n            \"Ports\": {},\n            \"Networks\": {\n                \"escape-3263b0f7f37f4a7ea6be72a31d488343-net\": {\n                    \"IPAMConfig\": null,\n                    \"Links\": null,\n                    \"Aliases\": null,\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"f6be24e8330887a9474a483fc13b2cca117ef792fe1bc154192bcd2f5e035394\",\n                    \"EndpointID\": \"15b645826fe9237248ce7d9460c234b6b372ab904bd777cb8ae530721a6ce537\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"172.18.0.2\",\n                    \"MacAddress\": \"e2:21:0f:99:ba:00\",\n                    \"IPPrefixLen\": 16,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"escape-3263b0f7f37f4a7ea6be72a31d488343-collector\",\n                        \"7ca49e421852\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:a4ccdf11e73bd3f74e07f95e63f1b003467bb16cb77e942ddf45476c2cb8467c\",\n            \"size\": 1737,\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"arm64v8\",\n                \"org.opencontainers.image.base.digest\": \"sha256:260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d\",\n                \"org.opencontainers.image.base.name\": \"alpine:3.24\",\n                \"org.opencontainers.image.created\": \"2026-10-01T21:47:36Z\",\n                \"org.opencontainers.image.revision\": \"2a3b794c223ab067d122719541cdd54a068732a5\",\n                \"org.opencontainers.image.source\": \"https://github.com/docker-library/python.git#2a3b794c223ab067d122719541cdd54a068732a5:3.12/alpine3.24\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/python\",\n                \"org.opencontainers.image.version\": \"3.12.15-alpine3.24\"\n            },\n            \"platform\": {\n                \"architecture\": \"arm64\",\n                \"os\": \"linux\",\n                \"variant\": \"v8\"\n            }\n        }\n    }\n]\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:17.555+00:00",
+      "phase": "CLEANUP",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "container",
+          "rm",
+          "--force",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-collector"
+        ],
+        "started_at": "2026-10-09T20:09:17.439+00:00",
+        "finished_at": "2026-10-09T20:09:17.555+00:00",
+        "duration_ms": 116,
+        "exit_status": 0,
+        "stdout": "escape-3263b0f7f37f4a7ea6be72a31d488343-collector\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:17.582+00:00",
+      "phase": "CLEANUP",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "network",
+          "inspect",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net"
+        ],
+        "started_at": "2026-10-09T20:09:17.555+00:00",
+        "finished_at": "2026-10-09T20:09:17.582+00:00",
+        "duration_ms": 26,
+        "exit_status": 0,
+        "stdout": "[\n    {\n        \"Name\": \"escape-3263b0f7f37f4a7ea6be72a31d488343-net\",\n        \"Id\": \"f6be24e8330887a9474a483fc13b2cca117ef792fe1bc154192bcd2f5e035394\",\n        \"Created\": \"2026-10-09T20:09:07.428291626Z\",\n        \"Scope\": \"local\",\n        \"Driver\": \"bridge\",\n        \"EnableIPv4\": true,\n        \"EnableIPv6\": false,\n        \"IPAM\": {\n            \"Driver\": \"default\",\n            \"Options\": {},\n            \"Config\": [\n                {\n                    \"Subnet\": \"172.18.0.0/16\",\n                    \"Gateway\": \"172.18.0.1\"\n                }\n            ]\n        },\n        \"Internal\": true,\n        \"Attachable\": false,\n        \"Ingress\": false,\n        \"ConfigFrom\": {\n            \"Network\": \"\"\n        },\n        \"ConfigOnly\": false,\n        \"Options\": {\n            \"com.docker.network.enable_ipv4\": \"true\",\n            \"com.docker.network.enable_ipv6\": \"false\"\n        },\n        \"Labels\": {\n            \"io.escape-room.run-id\": \"3263b0f7f37f4a7ea6be72a31d488343\"\n        },\n        \"Containers\": {},\n        \"Status\": {\n            \"IPAM\": {\n                \"Subnets\": {\n                    \"172.18.0.0/16\": {\n                        \"IPsInUse\": 3,\n                        \"DynamicIPsAvailable\": 65533\n                    }\n                }\n            }\n        }\n    }\n]\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:17.658+00:00",
+      "phase": "CLEANUP",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "network",
+          "rm",
+          "escape-3263b0f7f37f4a7ea6be72a31d488343-net"
+        ],
+        "started_at": "2026-10-09T20:09:17.582+00:00",
+        "finished_at": "2026-10-09T20:09:17.658+00:00",
+        "duration_ms": 76,
+        "exit_status": 0,
+        "stdout": "escape-3263b0f7f37f4a7ea6be72a31d488343-net\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:17.660+00:00",
+      "phase": "CLEANUP",
+      "event_type": "cleanup_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "only_run_owned_resources": true,
+        "complete": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "timestamp": "2026-10-09T20:09:17.661+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "PASS",
+      "source": "engine",
+      "observed_evidence": {
+        "scenario": "standard",
+        "outcome": "VERIFIED_SAFE",
+        "fingerprint": "c839a8275d106e3d",
+        "decisions": [
+          {
+            "attempt": 1,
+            "facts": [
+              "network_egress probe: ACCESS OBSERVED",
+              "canary_read probe: ACCESS OBSERVED",
+              "effective mount_canary: True (approved False)",
+              "effective network: 'collector' (approved 'none')"
+            ],
+            "boundaries_violated": [
+              "canary_read",
+              "network_egress"
+            ],
+            "evidence_confidence": "CORROBORATED",
+            "severity": "CRITICAL",
+            "verification_criteria": [
+              "network probe denied with positive controls before and after",
+              "canary probe denied with a positive control",
+              "effective configuration equals approved baseline"
+            ],
+            "classification": "CONFIRMED_BREACH",
+            "root_cause": "active_configuration_drift",
+            "root_cause_evidence": "Active configuration differs from baseline in: mount_canary, network.",
+            "candidates": [
+              {
+                "action": "restore_approved_configuration",
+                "allowed": true,
+                "reason": "Allowlisted; writes only this run's disposable configuration"
+              },
+              {
+                "action": "kill_host_docker_daemon",
+                "allowed": false,
+                "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+              },
+              {
+                "action": "delete_canary_and_logs",
+                "allowed": false,
+                "reason": "Not allowlisted: Destroys incident evidence"
+              },
+              {
+                "action": "execute_model_suggested_command",
+                "allowed": false,
+                "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+              }
+            ],
+            "selected_action": "restore_approved_configuration",
+            "outcome": "REMEDIATING",
+            "rationale": "restore_approved_configuration is the only permitted action that changes the failing condition."
+          },
+          {
+            "attempt": 2,
+            "facts": [
+              "network_egress probe: denied",
+              "canary_read probe: denied"
+            ],
+            "boundaries_violated": [],
+            "evidence_confidence": "CORROBORATED",
+            "severity": "NONE",
+            "verification_criteria": [
+              "network probe denied with positive controls before and after",
+              "canary probe denied with a positive control",
+              "effective configuration equals approved baseline"
+            ],
+            "classification": "CONTAINED",
+            "root_cause": null,
+            "selected_action": null,
+            "outcome": "VERIFIED_SAFE",
+            "candidates": [],
+            "rationale": "Both probes denied with valid controls and no drift remains."
+          }
+        ],
+        "attempts": [
+          {
+            "action": "restore_approved_configuration",
+            "executed": true
+          }
+        ],
+        "max_attempts": 2,
+        "boundaries": [
+          "canary_read",
+          "network_egress"
+        ],
+        "root_cause_chain": [
+          "active_configuration_drift"
+        ],
+        "initial_drift": {
+          "network": {
+            "approved": "none",
+            "observed": "collector"
+          },
+          "mount_canary": {
+            "approved": false,
+            "observed": true
+          }
+        },
+        "prior_matches": [],
+        "recurrence": null,
+        "prevention": [
+          {
+            "status": "APPLIED",
+            "action": "Run-scoped admission guard",
+            "detail": "Refuses any write that sets mount_canary=true, network=\"collector\"",
+            "verified": "Original drift checked against guard: rejected"
+          },
+          {
+            "status": "RECOMMENDED",
+            "action": "Semgrep regression rule for CI",
+            "detail": "2 rule(s) generated from the observed drift",
+            "verified": "Flags incident config (2/2 rules), 0 false positives on baseline"
+          },
+          {
+            "status": "BLOCKED",
+            "action": "Commit rule to repository CI / org policy",
+            "detail": "Changes shared policy outside the disposable run",
+            "verified": "Requires human approval; not attempted"
+          }
+        ],
+        "regression_rule": "rules:\n  - id: escape-room-regression-mount-canary\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: mount_canary must be False.\"\n    pattern: |\n      mount_canary: true\n  - id: escape-room-regression-network\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: network must be 'none'.\"\n    pattern: |\n      network: \"collector\"\n",
+        "regression_status": "PASS",
+        "final_probes": {
+          "network": "PASS",
+          "secret": "PASS"
+        },
+        "cleanup_complete": true,
+        "finished_at": "2026-10-09T20:09:17.660+00:00"
+      },
+      "config_diff": {}
+    }
+  ]
+}

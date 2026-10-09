@@ -92,3 +92,16 @@ test('integration claims require bounded advice, matching counts and exact GitHu
   raw.github.issue_url = 'javascript:alert(1)';
   assert.ok(Object.values(validateIntegrations(raw)).every(r => r.status === 'INCONCLUSIVE'));
 });
+
+test('commander records: recorded outcomes validate and contradictions are rejected', async () => {
+  const { validateCommander } = await import('../web/commander.js');
+  const raw = JSON.parse(await readFile(new URL('../web/commander.json', import.meta.url), 'utf8'));
+  const data = validateCommander(raw);
+  assert.deepEqual(data.scenarios.map(r => r.outcome), ['VERIFIED_SAFE', 'VERIFIED_SAFE', 'ESCALATED', 'RECURRENCE_BLOCKED']);
+  const forged = structuredClone(raw);
+  forged.scenarios[2].outcome = 'VERIFIED_SAFE';
+  assert.throws(() => validateCommander(forged));
+  const looping = structuredClone(raw);
+  looping.scenarios[0].attempts = [{}, {}, {}];
+  assert.throws(() => validateCommander(looping));
+});

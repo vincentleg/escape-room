@@ -1,0 +1,915 @@
+{
+  "schema_version": 1,
+  "mode": "recorded_local_docker",
+  "scenarios": [
+    {
+      "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+      "source_sha256": "42e8d46142d4f736187fba18f0dd36d70c4a2e5a32dc25ba800e61cb02e323cb",
+      "scenario": "standard",
+      "status": "PASS",
+      "outcome": "VERIFIED_SAFE",
+      "recorded_at": "2026-10-09T20:09:07.323+00:00",
+      "finished_at": "2026-10-09T20:09:17.660+00:00",
+      "event_count": 64,
+      "cleanup_complete": true,
+      "fingerprint": "c839a8275d106e3d",
+      "prior_matches": [],
+      "root_cause_chain": [
+        "active_configuration_drift"
+      ],
+      "boundaries": [
+        "canary_read",
+        "network_egress"
+      ],
+      "attempts": [
+        {
+          "action": "restore_approved_configuration",
+          "executed": true
+        }
+      ],
+      "max_attempts": 2,
+      "final_probes": {
+        "network": "PASS",
+        "secret": "PASS"
+      },
+      "decisions": [
+        {
+          "attempt": 1,
+          "facts": [
+            "network_egress probe: ACCESS OBSERVED",
+            "canary_read probe: ACCESS OBSERVED",
+            "effective mount_canary: True (approved False)",
+            "effective network: 'collector' (approved 'none')"
+          ],
+          "boundaries_violated": [
+            "canary_read",
+            "network_egress"
+          ],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "CRITICAL",
+          "classification": "CONFIRMED_BREACH",
+          "root_cause": "active_configuration_drift",
+          "root_cause_evidence": "Active configuration differs from baseline in: mount_canary, network.",
+          "candidates": [
+            {
+              "action": "restore_approved_configuration",
+              "allowed": true,
+              "reason": "Allowlisted; writes only this run's disposable configuration"
+            },
+            {
+              "action": "kill_host_docker_daemon",
+              "allowed": false,
+              "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+            },
+            {
+              "action": "delete_canary_and_logs",
+              "allowed": false,
+              "reason": "Not allowlisted: Destroys incident evidence"
+            },
+            {
+              "action": "execute_model_suggested_command",
+              "allowed": false,
+              "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+            }
+          ],
+          "selected_action": "restore_approved_configuration",
+          "outcome": "REMEDIATING",
+          "rationale": "restore_approved_configuration is the only permitted action that changes the failing condition.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ]
+        },
+        {
+          "attempt": 2,
+          "facts": [
+            "network_egress probe: denied",
+            "canary_read probe: denied"
+          ],
+          "boundaries_violated": [],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "NONE",
+          "classification": "CONTAINED",
+          "root_cause": null,
+          "candidates": [],
+          "selected_action": null,
+          "outcome": "VERIFIED_SAFE",
+          "rationale": "Both probes denied with valid controls and no drift remains.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "status": "APPLIED",
+          "action": "Run-scoped admission guard",
+          "detail": "Refuses any write that sets mount_canary=true, network=\"collector\"",
+          "verified": "Original drift checked against guard: rejected"
+        },
+        {
+          "status": "RECOMMENDED",
+          "action": "Semgrep regression rule for CI",
+          "detail": "2 rule(s) generated from the observed drift",
+          "verified": "Flags incident config (2/2 rules), 0 false positives on baseline"
+        },
+        {
+          "status": "BLOCKED",
+          "action": "Commit rule to repository CI / org policy",
+          "detail": "Changes shared policy outside the disposable run",
+          "verified": "Requires human approval; not attempted"
+        }
+      ],
+      "recurrence": null,
+      "regression_rule": "rules:\n  - id: escape-room-regression-mount-canary\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: mount_canary must be False.\"\n    pattern: |\n      mount_canary: true\n  - id: escape-room-regression-network\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: network must be 'none'.\"\n    pattern: |\n      network: \"collector\"\n",
+      "regression_status": "PASS",
+      "timeline": [
+        {
+          "step": "DETECT",
+          "label": "Drift in mount_canary, network",
+          "status": "FAIL",
+          "event_index": 24,
+          "t": "2026-10-09T20:09:10.442+00:00"
+        },
+        {
+          "step": "INVESTIGATE",
+          "label": "Probes: network FAIL, canary FAIL",
+          "status": "FAIL",
+          "event_index": 38,
+          "t": "2026-10-09T20:09:12.907+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #1: REMEDIATING \u2192 restore_approved_configuration",
+          "status": "PASS",
+          "event_index": 39,
+          "t": "2026-10-09T20:09:12.908+00:00"
+        },
+        {
+          "step": "CONTAIN",
+          "label": "Executed restore_approved_configuration",
+          "status": "PASS",
+          "event_index": 40,
+          "t": "2026-10-09T20:09:12.909+00:00"
+        },
+        {
+          "step": "VERIFY",
+          "label": "Probes: network PASS, canary PASS",
+          "status": "PASS",
+          "event_index": 53,
+          "t": "2026-10-09T20:09:15.277+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #2: VERIFIED_SAFE",
+          "status": "PASS",
+          "event_index": 54,
+          "t": "2026-10-09T20:09:15.277+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Guard applied; original drift rejected",
+          "status": "PASS",
+          "event_index": 55,
+          "t": "2026-10-09T20:09:15.278+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Semgrep regression rule PASS",
+          "status": "PASS",
+          "event_index": 56,
+          "t": "2026-10-09T20:09:17.407+00:00"
+        },
+        {
+          "step": "REPORT",
+          "label": "Outcome: VERIFIED_SAFE",
+          "status": "PASS",
+          "event_index": 57,
+          "t": "2026-10-09T20:09:17.407+00:00"
+        }
+      ]
+    },
+    {
+      "run_id": "fdd90be9603e4a078ea1446909aab4bb",
+      "source_sha256": "025c1ddf34355d1e2c33b8c0bf3509581e6f45d54741e3ff8981a01cd03adad4",
+      "scenario": "persistent",
+      "status": "PASS",
+      "outcome": "VERIFIED_SAFE",
+      "recorded_at": "2026-10-09T20:09:17.796+00:00",
+      "finished_at": "2026-10-09T20:09:32.071+00:00",
+      "event_count": 80,
+      "cleanup_complete": true,
+      "fingerprint": "69ad3569e3f58d02",
+      "prior_matches": [],
+      "root_cause_chain": [
+        "active_configuration_drift",
+        "persistent_override_reasserts_drift"
+      ],
+      "boundaries": [
+        "canary_read",
+        "network_egress"
+      ],
+      "attempts": [
+        {
+          "action": "restore_approved_configuration",
+          "executed": true
+        },
+        {
+          "action": "quarantine_run_override",
+          "executed": true
+        }
+      ],
+      "max_attempts": 2,
+      "final_probes": {
+        "network": "PASS",
+        "secret": "PASS"
+      },
+      "decisions": [
+        {
+          "attempt": 1,
+          "facts": [
+            "network_egress probe: ACCESS OBSERVED",
+            "canary_read probe: ACCESS OBSERVED",
+            "effective mount_canary: True (approved False)",
+            "effective network: 'collector' (approved 'none')",
+            "persistent override layer present (owner: run, fields: network)"
+          ],
+          "boundaries_violated": [
+            "canary_read",
+            "network_egress"
+          ],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "CRITICAL",
+          "classification": "CONFIRMED_BREACH",
+          "root_cause": "active_configuration_drift",
+          "root_cause_evidence": "Active configuration differs from baseline in: mount_canary, network.",
+          "candidates": [
+            {
+              "action": "restore_approved_configuration",
+              "allowed": true,
+              "reason": "Allowlisted; writes only this run's disposable configuration"
+            },
+            {
+              "action": "quarantine_run_override",
+              "allowed": false,
+              "reason": "Deferred: fix active drift first, then re-verify"
+            },
+            {
+              "action": "kill_host_docker_daemon",
+              "allowed": false,
+              "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+            },
+            {
+              "action": "delete_canary_and_logs",
+              "allowed": false,
+              "reason": "Not allowlisted: Destroys incident evidence"
+            },
+            {
+              "action": "execute_model_suggested_command",
+              "allowed": false,
+              "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+            }
+          ],
+          "selected_action": "restore_approved_configuration",
+          "outcome": "REMEDIATING",
+          "rationale": "restore_approved_configuration is the only permitted action that changes the failing condition.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ]
+        },
+        {
+          "attempt": 2,
+          "facts": [
+            "network_egress probe: ACCESS OBSERVED",
+            "canary_read probe: denied",
+            "effective network: 'collector' (approved 'none')",
+            "persistent override layer present (owner: run, fields: network)"
+          ],
+          "boundaries_violated": [
+            "network_egress"
+          ],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "HIGH",
+          "classification": "INCOMPLETE_RECOVERY",
+          "root_cause": "persistent_override_reasserts_drift",
+          "root_cause_evidence": "Active file already equals baseline, but an override layer re-applies network; restoring the file again cannot fix this.",
+          "candidates": [
+            {
+              "action": "restore_approved_configuration",
+              "allowed": false,
+              "reason": "Active file already matches baseline; would not change the effective config"
+            },
+            {
+              "action": "quarantine_run_override",
+              "allowed": true,
+              "reason": "Allowlisted; moves a run-owned layer into quarantine (reversible, evidence kept)"
+            },
+            {
+              "action": "kill_host_docker_daemon",
+              "allowed": false,
+              "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+            },
+            {
+              "action": "delete_canary_and_logs",
+              "allowed": false,
+              "reason": "Not allowlisted: Destroys incident evidence"
+            },
+            {
+              "action": "execute_model_suggested_command",
+              "allowed": false,
+              "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+            }
+          ],
+          "selected_action": "quarantine_run_override",
+          "outcome": "REMEDIATING",
+          "rationale": "quarantine_run_override is the only permitted action that changes the failing condition.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ]
+        },
+        {
+          "attempt": 3,
+          "facts": [
+            "network_egress probe: denied",
+            "canary_read probe: denied"
+          ],
+          "boundaries_violated": [],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "NONE",
+          "classification": "CONTAINED",
+          "root_cause": null,
+          "candidates": [],
+          "selected_action": null,
+          "outcome": "VERIFIED_SAFE",
+          "rationale": "Both probes denied with valid controls and no drift remains.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "status": "APPLIED",
+          "action": "Run-scoped admission guard",
+          "detail": "Refuses any write that sets mount_canary=true, network=\"collector\"",
+          "verified": "Original drift checked against guard: rejected"
+        },
+        {
+          "status": "RECOMMENDED",
+          "action": "Semgrep regression rule for CI",
+          "detail": "2 rule(s) generated from the observed drift",
+          "verified": "Flags incident config (2/2 rules), 0 false positives on baseline"
+        },
+        {
+          "status": "BLOCKED",
+          "action": "Commit rule to repository CI / org policy",
+          "detail": "Changes shared policy outside the disposable run",
+          "verified": "Requires human approval; not attempted"
+        }
+      ],
+      "recurrence": null,
+      "regression_rule": "rules:\n  - id: escape-room-regression-mount-canary\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: mount_canary must be False.\"\n    pattern: |\n      mount_canary: true\n  - id: escape-room-regression-network\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: network must be 'none'.\"\n    pattern: |\n      network: \"collector\"\n",
+      "regression_status": "PASS",
+      "timeline": [
+        {
+          "step": "DETECT",
+          "label": "Drift in mount_canary, network",
+          "status": "FAIL",
+          "event_index": 24,
+          "t": "2026-10-09T20:09:21.023+00:00"
+        },
+        {
+          "step": "INVESTIGATE",
+          "label": "Probes: network FAIL, canary FAIL",
+          "status": "FAIL",
+          "event_index": 38,
+          "t": "2026-10-09T20:09:23.724+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #1: REMEDIATING \u2192 restore_approved_configuration",
+          "status": "PASS",
+          "event_index": 39,
+          "t": "2026-10-09T20:09:23.726+00:00"
+        },
+        {
+          "step": "CONTAIN",
+          "label": "Executed restore_approved_configuration",
+          "status": "PASS",
+          "event_index": 40,
+          "t": "2026-10-09T20:09:23.728+00:00"
+        },
+        {
+          "step": "VERIFY",
+          "label": "Probes: network FAIL, canary PASS",
+          "status": "FAIL",
+          "event_index": 54,
+          "t": "2026-10-09T20:09:26.486+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #2: REMEDIATING \u2192 quarantine_run_override",
+          "status": "PASS",
+          "event_index": 55,
+          "t": "2026-10-09T20:09:26.488+00:00"
+        },
+        {
+          "step": "CONTAIN",
+          "label": "Executed quarantine_run_override",
+          "status": "PASS",
+          "event_index": 56,
+          "t": "2026-10-09T20:09:26.490+00:00"
+        },
+        {
+          "step": "VERIFY",
+          "label": "Probes: network PASS, canary PASS",
+          "status": "PASS",
+          "event_index": 69,
+          "t": "2026-10-09T20:09:29.321+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #3: VERIFIED_SAFE",
+          "status": "PASS",
+          "event_index": 70,
+          "t": "2026-10-09T20:09:29.323+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Guard applied; original drift rejected",
+          "status": "PASS",
+          "event_index": 71,
+          "t": "2026-10-09T20:09:29.328+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Semgrep regression rule PASS",
+          "status": "PASS",
+          "event_index": 72,
+          "t": "2026-10-09T20:09:31.814+00:00"
+        },
+        {
+          "step": "REPORT",
+          "label": "Outcome: VERIFIED_SAFE",
+          "status": "PASS",
+          "event_index": 73,
+          "t": "2026-10-09T20:09:31.814+00:00"
+        }
+      ]
+    },
+    {
+      "run_id": "254096dd7aaf40bfbb7c083e785015f8",
+      "source_sha256": "6a4203cfe44369fac03ec67a87e83ccfc89a508c26b4dba2100eb91e12fb2b76",
+      "scenario": "escalation",
+      "status": "FAIL",
+      "outcome": "ESCALATED",
+      "recorded_at": "2026-10-09T20:09:32.210+00:00",
+      "finished_at": "2026-10-09T20:09:43.310+00:00",
+      "event_count": 64,
+      "cleanup_complete": true,
+      "fingerprint": "69ad3569e3f58d02",
+      "prior_matches": [
+        {
+          "run_id": "fdd90be9603e4a078ea1446909aab4bb",
+          "recorded_at": "2026-10-09T20:09:32.071+00:00"
+        }
+      ],
+      "root_cause_chain": [
+        "active_configuration_drift",
+        "persistent_override_reasserts_drift"
+      ],
+      "boundaries": [
+        "canary_read",
+        "network_egress"
+      ],
+      "attempts": [
+        {
+          "action": "restore_approved_configuration",
+          "executed": true
+        }
+      ],
+      "max_attempts": 2,
+      "final_probes": {
+        "network": "FAIL",
+        "secret": "PASS"
+      },
+      "decisions": [
+        {
+          "attempt": 1,
+          "facts": [
+            "network_egress probe: ACCESS OBSERVED",
+            "canary_read probe: ACCESS OBSERVED",
+            "effective mount_canary: True (approved False)",
+            "effective network: 'collector' (approved 'none')",
+            "persistent override layer present (owner: external, fields: network)"
+          ],
+          "boundaries_violated": [
+            "canary_read",
+            "network_egress"
+          ],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "CRITICAL",
+          "classification": "CONFIRMED_BREACH",
+          "root_cause": "active_configuration_drift",
+          "root_cause_evidence": "Active configuration differs from baseline in: mount_canary, network.",
+          "candidates": [
+            {
+              "action": "restore_approved_configuration",
+              "allowed": true,
+              "reason": "Allowlisted; writes only this run's disposable configuration"
+            },
+            {
+              "action": "quarantine_run_override",
+              "allowed": false,
+              "reason": "Deferred: fix active drift first, then re-verify"
+            },
+            {
+              "action": "kill_host_docker_daemon",
+              "allowed": false,
+              "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+            },
+            {
+              "action": "delete_canary_and_logs",
+              "allowed": false,
+              "reason": "Not allowlisted: Destroys incident evidence"
+            },
+            {
+              "action": "execute_model_suggested_command",
+              "allowed": false,
+              "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+            }
+          ],
+          "selected_action": "restore_approved_configuration",
+          "outcome": "REMEDIATING",
+          "rationale": "restore_approved_configuration is the only permitted action that changes the failing condition.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ]
+        },
+        {
+          "attempt": 2,
+          "facts": [
+            "network_egress probe: ACCESS OBSERVED",
+            "canary_read probe: denied",
+            "effective network: 'collector' (approved 'none')",
+            "persistent override layer present (owner: external, fields: network)"
+          ],
+          "boundaries_violated": [
+            "network_egress"
+          ],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "HIGH",
+          "classification": "CONTAINMENT_FAILURE",
+          "root_cause": "persistent_override_reasserts_drift",
+          "root_cause_evidence": "Active file already equals baseline, but an override layer re-applies network; restoring the file again cannot fix this.",
+          "candidates": [
+            {
+              "action": "restore_approved_configuration",
+              "allowed": false,
+              "reason": "Active file already matches baseline; would not change the effective config"
+            },
+            {
+              "action": "quarantine_run_override",
+              "allowed": false,
+              "reason": "BLOCKED: layer is owned outside this run; requires human approval"
+            },
+            {
+              "action": "kill_host_docker_daemon",
+              "allowed": false,
+              "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+            },
+            {
+              "action": "delete_canary_and_logs",
+              "allowed": false,
+              "reason": "Not allowlisted: Destroys incident evidence"
+            },
+            {
+              "action": "execute_model_suggested_command",
+              "allowed": false,
+              "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+            }
+          ],
+          "selected_action": null,
+          "outcome": "ESCALATED",
+          "rationale": "No permitted action can change the failing condition; escalating instead of looping.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ],
+          "blocked_actions": [
+            "quarantine_run_override"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "status": "RECOMMENDED",
+          "action": "Semgrep regression rule for CI",
+          "detail": "2 rule(s) generated from the observed drift",
+          "verified": "Flags incident config (2/2 rules), 0 false positives on baseline"
+        },
+        {
+          "status": "BLOCKED",
+          "action": "Commit rule to repository CI / org policy",
+          "detail": "Changes shared policy outside the disposable run",
+          "verified": "Requires human approval; not attempted"
+        },
+        {
+          "status": "BLOCKED",
+          "action": "Remove externally owned override",
+          "detail": "Override owner is outside this run",
+          "verified": "Requires human approval; layer left in place, evidence preserved"
+        }
+      ],
+      "recurrence": null,
+      "regression_rule": "rules:\n  - id: escape-room-regression-mount-canary\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: mount_canary must be False.\"\n    pattern: |\n      mount_canary: true\n  - id: escape-room-regression-network\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: network must be 'none'.\"\n    pattern: |\n      network: \"collector\"\n",
+      "regression_status": "PASS",
+      "timeline": [
+        {
+          "step": "DETECT",
+          "label": "Drift in mount_canary, network",
+          "status": "FAIL",
+          "event_index": 24,
+          "t": "2026-10-09T20:09:35.520+00:00"
+        },
+        {
+          "step": "INVESTIGATE",
+          "label": "Probes: network FAIL, canary FAIL",
+          "status": "FAIL",
+          "event_index": 38,
+          "t": "2026-10-09T20:09:38.114+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #1: REMEDIATING \u2192 restore_approved_configuration",
+          "status": "PASS",
+          "event_index": 39,
+          "t": "2026-10-09T20:09:38.115+00:00"
+        },
+        {
+          "step": "CONTAIN",
+          "label": "Executed restore_approved_configuration",
+          "status": "PASS",
+          "event_index": 40,
+          "t": "2026-10-09T20:09:38.117+00:00"
+        },
+        {
+          "step": "VERIFY",
+          "label": "Probes: network FAIL, canary PASS",
+          "status": "FAIL",
+          "event_index": 54,
+          "t": "2026-10-09T20:09:40.780+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #2: ESCALATED",
+          "status": "FAIL",
+          "event_index": 55,
+          "t": "2026-10-09T20:09:40.781+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Semgrep regression rule PASS",
+          "status": "PASS",
+          "event_index": 56,
+          "t": "2026-10-09T20:09:43.070+00:00"
+        },
+        {
+          "step": "REPORT",
+          "label": "Outcome: ESCALATED",
+          "status": "FAIL",
+          "event_index": 57,
+          "t": "2026-10-09T20:09:43.070+00:00"
+        }
+      ]
+    },
+    {
+      "run_id": "f6774f9553c84aa7848402c7b083ce35",
+      "source_sha256": "556ec66663df905627cfa2feb68182f794fd20295a164c70fa401650e3d5bcbb",
+      "scenario": "recurrence",
+      "status": "PASS",
+      "outcome": "RECURRENCE_BLOCKED",
+      "recorded_at": "2026-10-09T20:09:43.447+00:00",
+      "finished_at": "2026-10-09T20:09:57.018+00:00",
+      "event_count": 78,
+      "cleanup_complete": true,
+      "fingerprint": "c839a8275d106e3d",
+      "prior_matches": [
+        {
+          "run_id": "3263b0f7f37f4a7ea6be72a31d488343",
+          "recorded_at": "2026-10-09T20:09:17.660+00:00"
+        }
+      ],
+      "root_cause_chain": [
+        "active_configuration_drift"
+      ],
+      "boundaries": [
+        "canary_read",
+        "network_egress"
+      ],
+      "attempts": [
+        {
+          "action": "restore_approved_configuration",
+          "executed": true
+        }
+      ],
+      "max_attempts": 2,
+      "final_probes": {
+        "network": "PASS",
+        "secret": "PASS"
+      },
+      "decisions": [
+        {
+          "attempt": 1,
+          "facts": [
+            "network_egress probe: ACCESS OBSERVED",
+            "canary_read probe: ACCESS OBSERVED",
+            "effective mount_canary: True (approved False)",
+            "effective network: 'collector' (approved 'none')"
+          ],
+          "boundaries_violated": [
+            "canary_read",
+            "network_egress"
+          ],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "CRITICAL",
+          "classification": "CONFIRMED_BREACH",
+          "root_cause": "active_configuration_drift",
+          "root_cause_evidence": "Active configuration differs from baseline in: mount_canary, network.",
+          "candidates": [
+            {
+              "action": "restore_approved_configuration",
+              "allowed": true,
+              "reason": "Allowlisted; writes only this run's disposable configuration"
+            },
+            {
+              "action": "kill_host_docker_daemon",
+              "allowed": false,
+              "reason": "Not allowlisted: Host-level action outside the disposable run scope"
+            },
+            {
+              "action": "delete_canary_and_logs",
+              "allowed": false,
+              "reason": "Not allowlisted: Destroys incident evidence"
+            },
+            {
+              "action": "execute_model_suggested_command",
+              "allowed": false,
+              "reason": "Not allowlisted: No arbitrary shell; model output is advisory only"
+            }
+          ],
+          "selected_action": "restore_approved_configuration",
+          "outcome": "REMEDIATING",
+          "rationale": "restore_approved_configuration is the only permitted action that changes the failing condition.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ]
+        },
+        {
+          "attempt": 2,
+          "facts": [
+            "network_egress probe: denied",
+            "canary_read probe: denied"
+          ],
+          "boundaries_violated": [],
+          "evidence_confidence": "CORROBORATED",
+          "severity": "NONE",
+          "classification": "CONTAINED",
+          "root_cause": null,
+          "candidates": [],
+          "selected_action": null,
+          "outcome": "VERIFIED_SAFE",
+          "rationale": "Both probes denied with valid controls and no drift remains.",
+          "verification_criteria": [
+            "network probe denied with positive controls before and after",
+            "canary probe denied with a positive control",
+            "effective configuration equals approved baseline"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "status": "APPLIED",
+          "action": "Run-scoped admission guard",
+          "detail": "Refuses any write that sets mount_canary=true, network=\"collector\"",
+          "verified": "Original drift checked against guard: rejected"
+        },
+        {
+          "status": "RECOMMENDED",
+          "action": "Semgrep regression rule for CI",
+          "detail": "2 rule(s) generated from the observed drift",
+          "verified": "Flags incident config (2/2 rules), 0 false positives on baseline"
+        },
+        {
+          "status": "BLOCKED",
+          "action": "Commit rule to repository CI / org policy",
+          "detail": "Changes shared policy outside the disposable run",
+          "verified": "Requires human approval; not attempted"
+        }
+      ],
+      "recurrence": {
+        "blocked_by_guard": true,
+        "probes_after": {
+          "network": "PASS",
+          "secret": "PASS"
+        },
+        "still_contained": true
+      },
+      "regression_rule": "rules:\n  - id: escape-room-regression-mount-canary\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: mount_canary must be False.\"\n    pattern: |\n      mount_canary: true\n  - id: escape-room-regression-network\n    languages: [yaml]\n    severity: ERROR\n    message: \"Re-introduces incident drift: network must be 'none'.\"\n    pattern: |\n      network: \"collector\"\n",
+      "regression_status": "PASS",
+      "timeline": [
+        {
+          "step": "DETECT",
+          "label": "Drift in mount_canary, network",
+          "status": "FAIL",
+          "event_index": 24,
+          "t": "2026-10-09T20:09:46.692+00:00"
+        },
+        {
+          "step": "INVESTIGATE",
+          "label": "Probes: network FAIL, canary FAIL",
+          "status": "FAIL",
+          "event_index": 38,
+          "t": "2026-10-09T20:09:49.280+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #1: REMEDIATING \u2192 restore_approved_configuration",
+          "status": "PASS",
+          "event_index": 39,
+          "t": "2026-10-09T20:09:49.281+00:00"
+        },
+        {
+          "step": "CONTAIN",
+          "label": "Executed restore_approved_configuration",
+          "status": "PASS",
+          "event_index": 40,
+          "t": "2026-10-09T20:09:49.284+00:00"
+        },
+        {
+          "step": "VERIFY",
+          "label": "Probes: network PASS, canary PASS",
+          "status": "PASS",
+          "event_index": 53,
+          "t": "2026-10-09T20:09:51.812+00:00"
+        },
+        {
+          "step": "DECIDE",
+          "label": "Decision #2: VERIFIED_SAFE",
+          "status": "PASS",
+          "event_index": 54,
+          "t": "2026-10-09T20:09:51.813+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Guard applied; original drift rejected",
+          "status": "PASS",
+          "event_index": 55,
+          "t": "2026-10-09T20:09:51.825+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Repeat drift BLOCKED by guard",
+          "status": "PASS",
+          "event_index": 56,
+          "t": "2026-10-09T20:09:51.825+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Probes: network PASS, canary PASS",
+          "status": "PASS",
+          "event_index": 69,
+          "t": "2026-10-09T20:09:54.337+00:00"
+        },
+        {
+          "step": "PREVENT",
+          "label": "Semgrep regression rule PASS",
+          "status": "PASS",
+          "event_index": 70,
+          "t": "2026-10-09T20:09:56.757+00:00"
+        },
+        {
+          "step": "REPORT",
+          "label": "Outcome: RECURRENCE_BLOCKED",
+          "status": "PASS",
+          "event_index": 71,
+          "t": "2026-10-09T20:09:56.758+00:00"
+        }
+      ]
+    }
+  ]
+}

@@ -19,15 +19,14 @@ ESCAPE ROOM is a fire drill for AI agents. It puts an agent in a disposable Dock
 
 | Time | Screen | Say |
 |---|---|---|
-| 0:00–0:20 | Hero: "Before an AI agent escapes…" | The problem: agents get tools, network and secrets. Configs drift. Nobody rehearses the escape. |
-| 0:20–0:35 | Scroll to the chamber; point at the "RECORDED VERIFICATION / NOT LIVE EXECUTION" bar | "This is a replay of a real Docker drill recorded on my laptop today, with the original timestamps. The public site never controls a runtime." |
-| 0:35–0:45 | Click **LAUNCH CRISIS** | Banner: **SECURE**. Both probes are denied, and positive controls prove the probes themselves work. |
-| 0:45–1:05 | **BREACH DETECTED → BREACH CONFIRMED** (flashing) | Drift: network on, canary mounted. The collector really received a request and the exact canary was really read. That's observed access, not a guess. |
-| 1:05–1:30 | **CONTAINMENT**; OpenAI card appears | The agent has exactly one allowlisted action, restore_approved_configuration. GPT-4o-mini analyzed the incident live and recommended the same action. The deterministic engine keeps the final say, and the LLM has no shell access. |
-| 1:30–1:50 | **AUTONOMOUS RECOVERY → VERIFIED SAFE** | Fresh containers, same probes, both denied again. The recovery gate passes and temporary resources are cleaned up. |
-| 1:50–2:20 | **Final verdict panel** | Point at the incident-to-recovery time, the 2/2 probes, Semgrep PASS, OpenAI PASS, ClickHouse events read back, and the GitHub issue link. Click the issue. |
-| 2:20–2:45 | Scroll to "Every claim has a record": probe ledger, Semgrep findings, run selector, Download evidence | Two independent recorded runs (76388a73 and 14ebcce7). Semgrep rules flag the drift config by file and line. The evidence is downloadable. |
-| 2:45–3:00 | Back to top, then **↺ REPLAY CRISIS** | "Before an AI agent escapes, prove you can contain it. That's ESCAPE ROOM." |
+| 0:00–0:15 | Hero | Agents get tools, network and secrets. Configs drift. Nobody rehearses the escape. |
+| 0:15–0:25 | Chamber; point at "RECORDED VERIFICATION / NOT LIVE EXECUTION" | "These are real Docker drills recorded on my laptop today. The public site never controls a runtime." |
+| 0:25–1:05 | Click **LAUNCH CRISIS**, let it play to **VERIFIED SAFE** | Probes denied, then drift. The collector really received a request and the canary was really read. The agent restores the approved config and runs the same probes again. Point at the OpenAI, ClickHouse and GitHub receipts. |
+| 1:05–1:35 | Scroll to **Incident Commander**, **STANDARD BREACH** | The decision engine: observed facts, CRITICAL severity, root cause, candidate actions. Three unsafe actions are rejected with reasons. "The model advises; the allowlist decides." |
+| 1:35–2:10 | Click **FAILED VERIFICATION** | The first fix didn't work. The network probe still reached the collector. The agent doesn't claim success. It diagnoses a persistent override layer, refuses to repeat the same action, quarantines the run-owned layer and re-verifies. Two attempts, capped. |
+| 2:10–2:30 | Click **OUT OF AUTHORITY** | Same symptom, but the layer isn't owned by this run. Outcome: **RECOVERY FAILED — ESCALATED**. It stops, keeps the evidence and asks a human. |
+| 2:30–2:50 | Click **REPEATED DRIFT**; show **Post-incident hardening** | The guard applied after recovery blocked the identical drift. The fingerprint matches the earlier incident. Click **Download regression rule**. It's a Semgrep rule verified to flag the incident config, with zero hits on the baseline. Marked RECOMMENDED; pushing it to CI is BLOCKED pending a human. |
+| 2:50–3:00 | Back to top | "It knows when to act, when to stop, and how to keep it from happening again. ESCAPE ROOM." |
 
 ## Recording plan
 
@@ -65,3 +64,20 @@ configs/drift.yaml ──┴─► engine/runner.py ─► Docker sandbox + coll
 - **Deterministic:** the remediation is chosen by a fixed policy allowlist, not by the LLM. OpenAI advice is validated and must match the allowlisted action, and it can never execute commands.
 - **Prerecorded:** the website **replays** two real recorded runs (sanitized, original timestamps, condensed timing). It is labeled "RECORDED REPLAY · NOT A LIVE EXECUTION". To run a live drill, use `./scripts/verify_docker.sh` locally with Docker.
 - **Scope:** two controls (network egress, secret-canary read) against disposable local targets. This is not a universal sandbox certification.
+
+## Incident Commander (added Oct 9 sprint)
+
+`python -m engine.commander <standard|persistent|escalation|recurrence>` runs one scenario against disposable Docker (same Runner, probes and positive controls as the original drill). `python -m engine.commander export` writes the sanitized `web/commander.json`.
+
+- **Decision engine (`engine/decision.py`):** deterministic. Inputs are probe outcomes, positive controls, active vs. effective config diff, override owner and attempt history. Outputs are facts, severity, classification, root cause plus evidence, candidate actions with allow/reject reasons, the selected action, and verification criteria. It never acts on uncorroborated evidence.
+- **Allowlist:** `restore_approved_configuration` and `quarantine_run_override` (run-owned layers only; a layer owned outside the run raises `HumanApprovalRequired`). At most 2 remediation attempts, then escalation.
+- **Recorded results (local Docker, Oct 9, cleanup verified on each):**
+  - standard → VERIFIED SAFE (1 attempt).
+  - persistent → restore did not fix it (network still FAIL); diagnosed override; quarantined; VERIFIED SAFE (2 attempts).
+  - escalation → ESCALATED, network still FAIL, override removal BLOCKED for a human.
+  - recurrence → after recovery the guard rejected the identical drift, probes still denied; RECURRENCE BLOCKED, fingerprint matches the standard run.
+- **Prevention status meanings:**
+  - APPLIED = a run-scoped admission guard, verified to reject the original drift.
+  - RECOMMENDED = a Semgrep regression rule generated from the observed drift, verified locally to flag the incident config with 0 baseline false positives. It is not committed to CI.
+  - BLOCKED = shared CI/policy changes, which need human approval.
+- **Not done:** no OpenAI, ClickHouse or GitHub calls for commander runs; those receipts belong to the original two runs only. Fingerprint history is local evidence only.

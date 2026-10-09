@@ -11,13 +11,14 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" type="module"></script>
+  <script src="./commander.js" type="module"></script>
 </head>
 <body>
   <a class="skip-link" href="#drill">Skip to crisis drill</a>
   <div class="page-shell">
     <header class="site-header">
       <a class="wordmark" href="#" aria-label="Escape Room home"><svg viewBox="0 0 34 36" aria-hidden="true"><path d="M5 7 17 1 29 7v22l-12 6L5 29V7Z M17 1v34 M5 7l12 6 12-6 M17 13v22"/></svg><span>ESCAPE ROOM<span class="wordmark-sub">AUTONOMOUS SECURITY SYSTEMS</span></span></a>
-      <nav aria-label="Primary navigation"><a href="#drill">The drill</a><a href="#evidence">The evidence</a><a href="#architecture">How it works <span>↗</span></a></nav>
+      <nav aria-label="Primary navigation"><a href="#drill">The drill</a><a href="#commander">The commander</a><a href="#evidence">The evidence</a><a href="#architecture">How it works <span>↗</span></a></nav>
       <span class="header-tag"><span class="small-dot"></span> LOCAL ENGINE. PUBLIC PROOF.</span>
     </header>
 
@@ -109,6 +110,21 @@
           <article><div class="integration-heading"><h3>ClickHouse observability</h3><span id="clickhouse-integration-status">NOT VERIFIED</span></div><div id="clickhouse-integration-body"><p>No verified cloud receipt loaded.</p></div></article>
           <article><div class="integration-heading"><h3>Autonomous incident report</h3><span id="github-integration-status">NOT VERIFIED</span></div><div id="github-integration-body"><p>No verified GitHub issue loaded.</p></div></article>
         </div>
+      </section>
+
+      <section class="commander-section" id="commander" aria-labelledby="commander-title">
+        <div class="section-caption"><span><span class="orange-square"></span> INCIDENT COMMANDER · SCENARIO CONTROL</span><span>RECORDED LOCAL DOCKER RUNS / NOT LIVE EXECUTION</span></div>
+        <div class="section-header"><div><p class="eyebrow">DETECT → INVESTIGATE → DECIDE → CONTAIN → VERIFY → PREVENT → REPORT</p><h2 id="commander-title">Different evidence.<br>Different decision.</h2></div><p>Each scenario is a real run of the deterministic decision engine against disposable Docker sandboxes. The agent acts only through an allowlist, caps itself at two remediation attempts, and escalates when no permitted action can fix the failing condition.</p></div>
+        <div class="cmd-scenarios" role="group" aria-label="Choose a recorded scenario"></div>
+        <div class="cmd-outcome"><span class="cmd-kicker">OUTCOME</span><strong id="cmd-outcome">LOADING…</strong><span id="cmd-outcome-sub"></span><div class="cmd-loop" id="cmd-loop"></div></div>
+        <div class="cmd-grid">
+          <article class="cmd-panel"><h3>Agent decision timeline</h3><ol class="cmd-timeline" id="cmd-timeline"></ol></article>
+          <article class="cmd-panel"><h3>Incident intelligence</h3><div class="cmd-decision-tabs" id="cmd-decision-tabs"></div><div id="cmd-decision"></div></article>
+        </div>
+        <article class="cmd-panel cmd-hardening"><div class="cmd-hardening-head"><h3>Post-incident hardening</h3><button class="outline-button" id="cmd-download">Download regression rule <span>↓</span></button></div>
+          <div class="cmd-kv"><div><span>INCIDENT FINGERPRINT</span><strong id="cmd-fingerprint">—</strong></div><div class="wide"><span>RECURRENCE CHECK</span><strong id="cmd-recurrence">—</strong></div></div>
+          <ul class="cmd-prevention" id="cmd-prevention"></ul>
+          <p class="cmd-provenance" id="cmd-provenance"></p></article>
       </section>
 
       <section class="evidence-section" id="evidence" aria-labelledby="evidence-title">
