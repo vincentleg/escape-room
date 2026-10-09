@@ -12,3 +12,5 @@ web/**
 !web/app.js
 !web/favicon.svg
 !web/evidence.json
+!web/commander.js
+!web/commander.json
