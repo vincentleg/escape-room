@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "run_id": "f368aa63fddd4348b6b7b099bb64e979",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "three_acts_verified": false,
+    "reason": "Docker command failed; see command_completed evidence",
+    "semgrep": "INCONCLUSIVE",
+    "semgrep_pending": true,
+    "cleanup_complete": true,
+    "exit_code": 2
+  },
+  "events": [
+    {
+      "run_id": "f368aa63fddd4348b6b7b099bb64e979",
+      "timestamp": "2026-10-09T18:21:55.005+00:00",
+      "phase": "SETUP",
+      "event_type": "run_started",
+      "status": "PASS",
+      "source": "demo",
+      "observed_evidence": {
+        "scope": "Two controlled probes in disposable local Docker infrastructure",
+        "status_semantics": "Probe PASS=denied, FAIL=observed access, INCONCLUSIVE=unverified",
+        "evidence": "Actual command output; host-specific paths replaced by placeholders"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "f368aa63fddd4348b6b7b099bb64e979",
+      "timestamp": "2026-10-09T18:21:55.006+00:00",
+      "phase": "STATIC",
+      "event_type": "semgrep_unavailable",
+      "status": "INCONCLUSIVE",
+      "source": "semgrep",
+      "observed_evidence": {
+        "reason": "Semgrep CLI is not installed; static integration pending"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "f368aa63fddd4348b6b7b099bb64e979",
+      "timestamp": "2026-10-09T18:21:55.181+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "context",
+          "inspect",
+          "--format",
+          "{{json .Endpoints.docker.Host}}"
+        ],
+        "started_at": "2026-10-09T18:21:55.009+00:00",
+        "finished_at": "2026-10-09T18:21:55.181+00:00",
+        "duration_ms": 172,
+        "exit_status": 0,
+        "stdout": "\"unix://<docker-socket>\"\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "f368aa63fddd4348b6b7b099bb64e979",
+      "timestamp": "2026-10-09T18:21:55.219+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "INCONCLUSIVE",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "version",
+          "--format",
+          "{{json .Server}}"
+        ],
+        "started_at": "2026-10-09T18:21:55.182+00:00",
+        "finished_at": "2026-10-09T18:21:55.219+00:00",
+        "duration_ms": 37,
+        "exit_status": 1,
+        "stdout": "null\n",
+        "stderr": "permission denied while trying to connect to the docker API at unix://<docker-socket>\n",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "f368aa63fddd4348b6b7b099bb64e979",
+      "timestamp": "2026-10-09T18:21:55.222+00:00",
+      "phase": "CLEANUP",
+      "event_type": "cleanup_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "only_run_owned_resources": true,
+        "complete": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "f368aa63fddd4348b6b7b099bb64e979",
+      "timestamp": "2026-10-09T18:21:55.222+00:00",
+      "phase": "SETUP",
+      "event_type": "execution_error",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "reason": "Docker command failed; see command_completed evidence"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "f368aa63fddd4348b6b7b099bb64e979",
+      "timestamp": "2026-10-09T18:21:55.222+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "three_acts_verified": false,
+        "reason": "Docker command failed; see command_completed evidence",
+        "semgrep": "INCONCLUSIVE",
+        "semgrep_pending": true,
+        "cleanup_complete": true,
+        "exit_code": 2
+      },
+      "config_diff": {}
+    }
+  ]
+}

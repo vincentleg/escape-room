@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "run_id": "8639e3836f7547a6854fb43ee93a3a31",
+  "status": "PASS",
+  "summary": {
+    "scope": "unit_tests_only",
+    "runtime_containment_verified": false,
+    "test_count": 38
+  },
+  "events": [
+    {
+      "run_id": "8639e3836f7547a6854fb43ee93a3a31",
+      "timestamp": "2026-10-09T18:02:43.308+00:00",
+      "phase": "VALIDATION",
+      "event_type": "final_focused_tests",
+      "status": "PASS",
+      "source": "unittest",
+      "observed_evidence": {
+        "command": [
+          "<workspace>/.venv/bin/python",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-v"
+        ],
+        "started_at": "2026-10-09T18:02:42.992+00:00",
+        "finished_at": "2026-10-09T18:02:43.308+00:00",
+        "duration_ms": 315,
+        "exit_status": 0,
+        "stdout": "",
+        "stderr": "test_failed_retest_never_recovers (test_engine.AgentTests) ... ok\ntest_full_event_driven_recovery (test_engine.AgentTests) ... ok\ntest_inconclusive_incident_does_not_claim_recovery (test_engine.AgentTests) ... ok\ntest_invalid_events_and_skipped_states_rejected (test_engine.AgentTests) ... ok\ntest_no_drift_does_not_probe (test_engine.AgentTests) ... ok\ntest_one_confirmed_failure_also_triggers_restore (test_engine.AgentTests) ... ok\ntest_event_schema_unique_ids_and_redaction (test_engine.EvidenceTests) ... ok\ntest_invalid_status_rejected (test_engine.EvidenceTests) ... ok\ntest_policy_only_is_explicit (test_engine.GateTests) ... ok\ntest_policy_violation_blocks_without_docker (test_engine.GateTests) ... ok\ntest_runtime_is_required_by_default (test_engine.GateTests) ... ok\ntest_baseline_cannot_be_changed_by_input_file (test_engine.PolicyTests) ... ok\ntest_duplicate_keys_rejected (test_engine.PolicyTests) ... ok\ntest_only_allowlisted_restore (test_engine.PolicyTests) ... ok\ntest_strict_configuration (test_engine.PolicyTests) ... ok\ntest_canary_requires_positive_control_and_exact_digest (test_engine.ProbeTests) ... ok\ntest_connection_refused_is_not_isolation (test_engine.ProbeTests) ... ok\ntest_decode_rejects_nonobject_json (test_engine.ProbeTests) ... ok\ntest_network_requires_both_positive_controls (test_engine.ProbeTests) ... ok\ntest_network_requires_matching_client_and_collector_evidence (test_engine.ProbeTests) ... ok\ntest_timeout_docker_failure_and_invalid_output_are_inconclusive (test_engine.ProbeTests) ... ok\ntest_real_child_exit_status_and_timeout (test_engine.ProcessTests) ... ok\ntest_sigterm_unwinds_and_restores_previous_handler (test_engine.ProcessTests) ... ok\ntest_cleanup_checks_exact_ownership (test_engine.RunnerTests) ... ok\ntest_close_on_setup_failure (test_engine.RunnerTests) ... ok\ntest_container_restrictions_and_exact_mount (test_engine.RunnerTests) ... ok\ntest_missing_resource_is_safe_but_daemon_failure_is_not (test_engine.RunnerTests) ... ok\ntest_remote_docker_endpoint_is_rejected (test_engine.RunnerTests) ... ok\ntest_timed_out_container_is_cleaned_immediately (test_engine.RunnerTests) ... ok\ntest_canary_absence_permission_and_other_errors (test_engine.ScriptTests) ... ok\ntest_canary_reads_actual_stream_and_checks_hash (test_engine.ScriptTests) ... ok\ntest_network_errno_classification (test_engine.ScriptTests) ... ok\ntest_network_response_token_is_verified (test_engine.ScriptTests) ... ok\ntest_network_timeout_is_error (test_engine.ScriptTests) ... ok\ntest_errors_or_unscanned_targets_cannot_pass (test_engine.StaticTests) ... ok\ntest_real_cli_json_shape_is_preserved_in_artifact (test_engine.StaticTests) ... ok\ntest_sample_verification_requires_both_rules_and_no_secure_findings (test_engine.StaticTests) ... ok\ntest_unavailable_semgrep_is_not_a_clean_scan (test_engine.StaticTests) ... ok\n\n----------------------------------------------------------------------\nRan 38 tests in 0.149s\n\nOK\n",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "8639e3836f7547a6854fb43ee93a3a31",
+      "timestamp": "2026-10-09T18:02:43.308+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "PASS",
+      "source": "engine",
+      "observed_evidence": {
+        "scope": "unit_tests_only",
+        "runtime_containment_verified": false,
+        "test_count": 38
+      },
+      "config_diff": {}
+    }
+  ]
+}

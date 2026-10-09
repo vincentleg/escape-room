@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "scope": "local_containment_and_static_checks",
+  "cloud_optional": true,
+  "checks": [
+    {
+      "check": "Existing virtualenv",
+      "status": "PASS",
+      "reason": "Verified"
+    },
+    {
+      "check": "Docker Desktop connectivity",
+      "status": "PASS",
+      "reason": "Verified"
+    },
+    {
+      "check": "ClickHouse DNS and verified HTTPS",
+      "status": "INCONCLUSIVE",
+      "reason": "Optional cloud check disabled; no connection attempted"
+    },
+    {
+      "check": "ClickHouse SELECT 1",
+      "status": "INCONCLUSIVE",
+      "reason": "Optional cloud check disabled; no connection attempted"
+    },
+    {
+      "check": "Semgrep CLI",
+      "status": "PASS",
+      "reason": "Verified"
+    },
+    {
+      "check": "Containment demonstration 1",
+      "status": "PASS",
+      "reason": "Verified"
+    },
+    {
+      "check": "Containment demonstration 2",
+      "status": "PASS",
+      "reason": "Verified"
+    },
+    {
+      "check": "Custom Semgrep rules",
+      "status": "PASS",
+      "reason": "Verified"
+    },
+    {
+      "check": "ClickHouse upload and event readback",
+      "status": "INCONCLUSIVE",
+      "reason": "Optional cloud check disabled; no connection attempted"
+    }
+  ],
+  "reason": "Two genuine Docker demonstrations verified; public replay exported. Semgrep verified.",
+  "exit_code": 0
+}

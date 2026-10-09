@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "run_id": "b92d6980f6aa40d085fea7faca9045d0",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "artifact_run_id": "14ebcce764af4b41a61b9095d47e8472"
+  },
+  "events": [
+    {
+      "run_id": "b92d6980f6aa40d085fea7faca9045d0",
+      "timestamp": "2026-10-09T19:36:28.564+00:00",
+      "phase": "INTEGRATION",
+      "event_type": "clickhouse_unverified",
+      "status": "INCONCLUSIVE",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "artifact_run_id": "14ebcce764af4b41a61b9095d47e8472",
+        "reason": "ClickHouse HTTP request failed (status 403)"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "b92d6980f6aa40d085fea7faca9045d0",
+      "timestamp": "2026-10-09T19:36:28.569+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "artifact_run_id": "14ebcce764af4b41a61b9095d47e8472"
+      },
+      "config_diff": {}
+    }
+  ]
+}

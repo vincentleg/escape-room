@@ -1,0 +1,13 @@
+{
+  "name": "escape-room-public-replay",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Static evidence replay for ESCAPE ROOM. No public runtime control.",
+  "scripts": {
+    "build": "node scripts/build_site.mjs",
+    "dev": "node scripts/build_site.mjs && node scripts/serve_site.mjs",
+    "test:web": "node --test tests/web.test.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

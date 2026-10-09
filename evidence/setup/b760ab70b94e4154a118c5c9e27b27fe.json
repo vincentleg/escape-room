@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "run_id": "b760ab70b94e4154a118c5c9e27b27fe",
+  "status": "PASS",
+  "summary": {
+    "scope": "local_validation_only",
+    "test_count": 53,
+    "remote_connection_verified": false,
+    "runtime_containment_verified": false
+  },
+  "events": [
+    {
+      "run_id": "b760ab70b94e4154a118c5c9e27b27fe",
+      "timestamp": "2026-10-09T18:23:06.990+00:00",
+      "phase": "VALIDATION",
+      "event_type": "final_test_suite",
+      "status": "PASS",
+      "source": "unittest",
+      "observed_evidence": {
+        "command": [
+          "<workspace>/.venv/bin/python",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-v"
+        ],
+        "started_at": "2026-10-09T18:23:06.613+00:00",
+        "finished_at": "2026-10-09T18:23:06.990+00:00",
+        "duration_ms": 377,
+        "exit_status": 0,
+        "stdout": "",
+        "stderr": "test_network_and_http_errors_do_not_expose_server_body_or_secret (test_clickhouse.ClientTests) ... ok\ntest_query_body_or_nonone_response_cannot_pass (test_clickhouse.ClientTests) ... ok\ntest_redirect_cannot_forward_credentials (test_clickhouse.ClientTests) ... ok\ntest_select_one_sends_password_only_in_header (test_clickhouse.ClientTests) ... ok\ntest_current_values_take_precedence (test_clickhouse.LocalSettingsTests) ... ok\ntest_empty_file_repaired_from_local_backup_without_exposing_password (test_clickhouse.LocalSettingsTests) ... ok\ntest_missing_secret_never_overwrites_existing_settings (test_clickhouse.LocalSettingsTests) ... ok\ntest_no_shell_expansion_and_hash_is_literal_inside_password (test_clickhouse.LocalSettingsTests) ... ok\ntest_rejects_symlinks_permissions_and_malformed_lines (test_clickhouse.LocalSettingsTests) ... ok\ntest_remote_cleartext_url_credentials_and_sql_identifiers_rejected (test_clickhouse.LocalSettingsTests) ... ok\ntest_credentials_scrubbed_before_serialization (test_clickhouse.TelemetryTests) ... ok\ntest_missing_readback_rows_never_claim_ingestion (test_clickhouse.TelemetryTests) ... ok\ntest_status_scope_order_and_event_ids_are_preserved (test_clickhouse.TelemetryTests) ... ok\ntest_unit_report_and_unfinished_artifacts_rejected (test_clickhouse.TelemetryTests) ... ok\ntest_upload_requires_exact_server_readback (test_clickhouse.TelemetryTests) ... ok\ntest_failed_retest_never_recovers (test_engine.AgentTests) ... ok\ntest_full_event_driven_recovery (test_engine.AgentTests) ... ok\ntest_inconclusive_incident_does_not_claim_recovery (test_engine.AgentTests) ... ok\ntest_invalid_events_and_skipped_states_rejected (test_engine.AgentTests) ... ok\ntest_no_drift_does_not_probe (test_engine.AgentTests) ... ok\ntest_one_confirmed_failure_also_triggers_restore (test_engine.AgentTests) ... ok\ntest_event_schema_unique_ids_and_redaction (test_engine.EvidenceTests) ... ok\ntest_invalid_status_rejected (test_engine.EvidenceTests) ... ok\ntest_policy_only_is_explicit (test_engine.GateTests) ... ok\ntest_policy_violation_blocks_without_docker (test_engine.GateTests) ... ok\ntest_runtime_is_required_by_default (test_engine.GateTests) ... ok\ntest_baseline_cannot_be_changed_by_input_file (test_engine.PolicyTests) ... ok\ntest_duplicate_keys_rejected (test_engine.PolicyTests) ... ok\ntest_only_allowlisted_restore (test_engine.PolicyTests) ... ok\ntest_strict_configuration (test_engine.PolicyTests) ... ok\ntest_canary_requires_positive_control_and_exact_digest (test_engine.ProbeTests) ... ok\ntest_connection_refused_is_not_isolation (test_engine.ProbeTests) ... ok\ntest_decode_rejects_nonobject_json (test_engine.ProbeTests) ... ok\ntest_network_requires_both_positive_controls (test_engine.ProbeTests) ... ok\ntest_network_requires_matching_client_and_collector_evidence (test_engine.ProbeTests) ... ok\ntest_timeout_docker_failure_and_invalid_output_are_inconclusive (test_engine.ProbeTests) ... ok\ntest_real_child_exit_status_and_timeout (test_engine.ProcessTests) ... ok\ntest_sigterm_unwinds_and_restores_previous_handler (test_engine.ProcessTests) ... ok\ntest_cleanup_checks_exact_ownership (test_engine.RunnerTests) ... ok\ntest_close_on_setup_failure (test_engine.RunnerTests) ... ok\ntest_container_restrictions_and_exact_mount (test_engine.RunnerTests) ... ok\ntest_missing_resource_is_safe_but_daemon_failure_is_not (test_engine.RunnerTests) ... ok\ntest_remote_docker_endpoint_is_rejected (test_engine.RunnerTests) ... ok\ntest_timed_out_container_is_cleaned_immediately (test_engine.RunnerTests) ... ok\ntest_canary_absence_permission_and_other_errors (test_engine.ScriptTests) ... ok\ntest_canary_reads_actual_stream_and_checks_hash (test_engine.ScriptTests) ... ok\ntest_network_errno_classification (test_engine.ScriptTests) ... ok\ntest_network_response_token_is_verified (test_engine.ScriptTests) ... ok\ntest_network_timeout_is_error (test_engine.ScriptTests) ... ok\ntest_errors_or_unscanned_targets_cannot_pass (test_engine.StaticTests) ... ok\ntest_real_cli_json_shape_is_preserved_in_artifact (test_engine.StaticTests) ... ok\ntest_sample_verification_requires_both_rules_and_no_secure_findings (test_engine.StaticTests) ... ok\ntest_unavailable_semgrep_is_not_a_clean_scan (test_engine.StaticTests) ... ok\n\n----------------------------------------------------------------------\nRan 53 tests in 0.188s\n\nOK\n",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "b760ab70b94e4154a118c5c9e27b27fe",
+      "timestamp": "2026-10-09T18:23:07.006+00:00",
+      "phase": "VALIDATION",
+      "event_type": "phase1_preservation",
+      "status": "PASS",
+      "source": "filesystem",
+      "observed_evidence": {
+        "files_checked": 29,
+        "changed_existing_files": []
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "b760ab70b94e4154a118c5c9e27b27fe",
+      "timestamp": "2026-10-09T18:23:07.021+00:00",
+      "phase": "VALIDATION",
+      "event_type": "credential_leak_check",
+      "status": "PASS",
+      "source": "filesystem",
+      "observed_evidence": {
+        "files_containing_stored_password": []
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "b760ab70b94e4154a118c5c9e27b27fe",
+      "timestamp": "2026-10-09T18:23:07.081+00:00",
+      "phase": "VALIDATION",
+      "event_type": "secret_git_exclusions",
+      "status": "PASS",
+      "source": "git",
+      "observed_evidence": {
+        "excluded_secret_paths": 3
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "b760ab70b94e4154a118c5c9e27b27fe",
+      "timestamp": "2026-10-09T18:23:07.089+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "PASS",
+      "source": "engine",
+      "observed_evidence": {
+        "scope": "local_validation_only",
+        "test_count": 53,
+        "remote_connection_verified": false,
+        "runtime_containment_verified": false
+      },
+      "config_diff": {}
+    }
+  ]
+}

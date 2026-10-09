@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "run_id": "21e7dd893e05408cb5080604fe989a02",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "checks": [
+      {
+        "check": "Existing virtualenv",
+        "status": "PASS",
+        "reason": "Verified"
+      },
+      {
+        "check": "Docker Desktop connectivity",
+        "status": "PASS",
+        "reason": "Verified"
+      },
+      {
+        "check": "ClickHouse DNS and verified HTTPS",
+        "status": "INCONCLUSIVE",
+        "reason": "Local verification encountered an error; remaining checks were not run."
+      },
+      {
+        "check": "ClickHouse SELECT 1",
+        "status": "INCONCLUSIVE",
+        "reason": "Not run"
+      },
+      {
+        "check": "Semgrep CLI",
+        "status": "INCONCLUSIVE",
+        "reason": "Not run"
+      },
+      {
+        "check": "Containment demonstration 1",
+        "status": "INCONCLUSIVE",
+        "reason": "Not run"
+      },
+      {
+        "check": "Containment demonstration 2",
+        "status": "INCONCLUSIVE",
+        "reason": "Not run"
+      },
+      {
+        "check": "Custom Semgrep rules",
+        "status": "INCONCLUSIVE",
+        "reason": "Not run"
+      },
+      {
+        "check": "ClickHouse upload and event readback",
+        "status": "INCONCLUSIVE",
+        "reason": "Not run"
+      }
+    ],
+    "reason": "Local verification encountered an error; remaining checks were not run.",
+    "exit_code": 2
+  },
+  "events": [
+    {
+      "run_id": "21e7dd893e05408cb5080604fe989a02",
+      "timestamp": "2026-10-09T18:28:39.837+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_completed",
+      "status": "PASS",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "Existing virtualenv",
+        "project_virtualenv": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "21e7dd893e05408cb5080604fe989a02",
+      "timestamp": "2026-10-09T18:28:39.946+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_completed",
+      "status": "PASS",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "Docker Desktop connectivity",
+        "daemon_connected": true,
+        "server_os": "linux",
+        "exit_status": 0
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "21e7dd893e05408cb5080604fe989a02",
+      "timestamp": "2026-10-09T18:28:50.207+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_blocked",
+      "status": "INCONCLUSIVE",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "ClickHouse DNS and verified HTTPS",
+        "reason": "Local verification encountered an error; remaining checks were not run."
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "21e7dd893e05408cb5080604fe989a02",
+      "timestamp": "2026-10-09T18:28:50.208+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "checks": [
+          {
+            "check": "Existing virtualenv",
+            "status": "PASS",
+            "reason": "Verified"
+          },
+          {
+            "check": "Docker Desktop connectivity",
+            "status": "PASS",
+            "reason": "Verified"
+          },
+          {
+            "check": "ClickHouse DNS and verified HTTPS",
+            "status": "INCONCLUSIVE",
+            "reason": "Local verification encountered an error; remaining checks were not run."
+          },
+          {
+            "check": "ClickHouse SELECT 1",
+            "status": "INCONCLUSIVE",
+            "reason": "Not run"
+          },
+          {
+            "check": "Semgrep CLI",
+            "status": "INCONCLUSIVE",
+            "reason": "Not run"
+          },
+          {
+            "check": "Containment demonstration 1",
+            "status": "INCONCLUSIVE",
+            "reason": "Not run"
+          },
+          {
+            "check": "Containment demonstration 2",
+            "status": "INCONCLUSIVE",
+            "reason": "Not run"
+          },
+          {
+            "check": "Custom Semgrep rules",
+            "status": "INCONCLUSIVE",
+            "reason": "Not run"
+          },
+          {
+            "check": "ClickHouse upload and event readback",
+            "status": "INCONCLUSIVE",
+            "reason": "Not run"
+          }
+        ],
+        "reason": "Local verification encountered an error; remaining checks were not run.",
+        "exit_code": 2
+      },
+      "config_diff": {}
+    }
+  ]
+}

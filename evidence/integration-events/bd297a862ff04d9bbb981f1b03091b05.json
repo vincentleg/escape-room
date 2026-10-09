@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "run_id": "bd297a862ff04d9bbb981f1b03091b05",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "artifact_run_id": "76388a73cc34463d9e77305c247973a9"
+  },
+  "events": [
+    {
+      "run_id": "bd297a862ff04d9bbb981f1b03091b05",
+      "timestamp": "2026-10-09T19:41:49.043+00:00",
+      "phase": "INTEGRATION",
+      "event_type": "clickhouse_unverified",
+      "status": "INCONCLUSIVE",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9",
+        "reason": "ClickHouse connection unavailable (network, DNS, TLS, or timeout)"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "bd297a862ff04d9bbb981f1b03091b05",
+      "timestamp": "2026-10-09T19:41:49.044+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9"
+      },
+      "config_diff": {}
+    }
+  ]
+}

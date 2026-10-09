@@ -1,0 +1,3 @@
+2026-10-09 11:50:37,483 - semgrep.app.auth - DEBUG - Getting API token from settings file
+2026-10-09 11:50:37,483 - semgrep.app.auth - DEBUG - No API token found in settings file
+2026-10-09 11:50:37,485 - semgrep.metrics - VERBOSE - Not sending pseudonymous metrics since metrics are configured to OFF, registry usage is False, and login status is False

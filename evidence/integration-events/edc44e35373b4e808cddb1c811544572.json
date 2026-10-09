@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "run_id": "edc44e35373b4e808cddb1c811544572",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "artifact_run_id": "76388a73cc34463d9e77305c247973a9"
+  },
+  "events": [
+    {
+      "run_id": "edc44e35373b4e808cddb1c811544572",
+      "timestamp": "2026-10-09T19:23:31.953+00:00",
+      "phase": "INTEGRATION",
+      "event_type": "clickhouse_unverified",
+      "status": "INCONCLUSIVE",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9",
+        "reason": "ClickHouse HTTP request failed (status 401)"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "edc44e35373b4e808cddb1c811544572",
+      "timestamp": "2026-10-09T19:23:31.957+00:00",
+      "phase": "INTEGRATION",
+      "event_type": "github_unverified",
+      "status": "INCONCLUSIVE",
+      "source": "github",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9",
+        "reason": "GitHub publication requires explicit repository/action authorization"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "edc44e35373b4e808cddb1c811544572",
+      "timestamp": "2026-10-09T19:23:31.958+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9"
+      },
+      "config_diff": {}
+    }
+  ]
+}

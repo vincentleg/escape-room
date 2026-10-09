@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "run_id": "7e029199d44846a9be17cfcc11b55138",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "scope": "clickhouse_upload",
+    "exit_code": 2
+  },
+  "events": [
+    {
+      "run_id": "7e029199d44846a9be17cfcc11b55138",
+      "timestamp": "2026-10-09T18:21:55.610+00:00",
+      "phase": "TELEMETRY",
+      "event_type": "telemetry_unverified",
+      "status": "INCONCLUSIVE",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "reason": "ClickHouse connection unavailable (network, DNS, TLS, or timeout)"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "7e029199d44846a9be17cfcc11b55138",
+      "timestamp": "2026-10-09T18:21:55.611+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "scope": "clickhouse_upload",
+        "exit_code": 2
+      },
+      "config_diff": {}
+    }
+  ]
+}

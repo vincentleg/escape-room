@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "run_id": "97a84481401c4032b1157556b89f7315",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "scope": "clickhouse_setup",
+    "password_printed": false
+  },
+  "events": [
+    {
+      "run_id": "97a84481401c4032b1157556b89f7315",
+      "timestamp": "2026-10-09T18:18:17.430+00:00",
+      "phase": "SETUP",
+      "event_type": "clickhouse_configuration_repaired",
+      "status": "PASS",
+      "source": "local_configuration",
+      "observed_evidence": {
+        "variables": [
+          "CLICKHOUSE_DATABASE",
+          "CLICKHOUSE_HOST",
+          "CLICKHOUSE_PASSWORD",
+          "CLICKHOUSE_PORT",
+          "CLICKHOUSE_SECURE",
+          "CLICKHOUSE_USER"
+        ],
+        "sources": {
+          "CLICKHOUSE_DATABASE": "default",
+          "CLICKHOUSE_SECURE": "local_backup",
+          "CLICKHOUSE_PORT": "local_backup",
+          "CLICKHOUSE_USER": "local_backup",
+          "CLICKHOUSE_HOST": "local_backup",
+          "CLICKHOUSE_PASSWORD": "local_backup"
+        },
+        "mode": "0600"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "97a84481401c4032b1157556b89f7315",
+      "timestamp": "2026-10-09T18:18:17.435+00:00",
+      "phase": "SETUP",
+      "event_type": "clickhouse_select_one_started",
+      "status": "PASS",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "query": "SELECT 1"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "97a84481401c4032b1157556b89f7315",
+      "timestamp": "2026-10-09T18:18:17.441+00:00",
+      "phase": "SETUP",
+      "event_type": "clickhouse_connection_unverified",
+      "status": "INCONCLUSIVE",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "query": "SELECT 1",
+        "reason": "ClickHouse connection unavailable (network, DNS, TLS, or timeout)"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "97a84481401c4032b1157556b89f7315",
+      "timestamp": "2026-10-09T18:18:17.441+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "scope": "clickhouse_setup",
+        "password_printed": false
+      },
+      "config_diff": {}
+    }
+  ]
+}

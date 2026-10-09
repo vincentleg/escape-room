@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+  "status": "PASS",
+  "summary": {
+    "checks": [
+      {
+        "check": "Existing virtualenv",
+        "status": "PASS",
+        "reason": "Verified"
+      },
+      {
+        "check": "Docker Desktop connectivity",
+        "status": "PASS",
+        "reason": "Verified"
+      },
+      {
+        "check": "ClickHouse DNS and verified HTTPS",
+        "status": "INCONCLUSIVE",
+        "reason": "Optional cloud check disabled; no connection attempted"
+      },
+      {
+        "check": "ClickHouse SELECT 1",
+        "status": "INCONCLUSIVE",
+        "reason": "Optional cloud check disabled; no connection attempted"
+      },
+      {
+        "check": "Semgrep CLI",
+        "status": "PASS",
+        "reason": "Verified"
+      },
+      {
+        "check": "Containment demonstration 1",
+        "status": "PASS",
+        "reason": "Verified"
+      },
+      {
+        "check": "Containment demonstration 2",
+        "status": "PASS",
+        "reason": "Verified"
+      },
+      {
+        "check": "Custom Semgrep rules",
+        "status": "PASS",
+        "reason": "Verified"
+      },
+      {
+        "check": "ClickHouse upload and event readback",
+        "status": "INCONCLUSIVE",
+        "reason": "Optional cloud check disabled; no connection attempted"
+      }
+    ],
+    "reason": "Two genuine Docker demonstrations verified; public replay exported. Semgrep verified.",
+    "exit_code": 0
+  },
+  "events": [
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:50:13.810+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_completed",
+      "status": "PASS",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "Existing virtualenv",
+        "project_virtualenv": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:50:13.923+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_completed",
+      "status": "PASS",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "Docker Desktop connectivity",
+        "daemon_connected": true,
+        "server_os": "linux",
+        "exit_status": 0
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:50:34.422+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "semgrep_installation",
+      "status": "PASS",
+      "source": "pip",
+      "observed_evidence": {
+        "exit_status": 0,
+        "scope": "existing_project_virtualenv",
+        "requirements": "requirements-semgrep.txt",
+        "raw_output_withheld": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:50:37.537+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_completed",
+      "status": "PASS",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "Semgrep CLI",
+        "version": "1.136.0",
+        "installed_in_this_run": true,
+        "exit_status": 0
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:50:53.050+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_completed",
+      "status": "PASS",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "Containment demonstration 1",
+        "demonstration": 1,
+        "artifact": "evidence/local-verify/20261009T185013Z-a773c7eb210a/demo-1/f25697fdc9874adda887319fe075b7f4.json",
+        "exit_status": 0,
+        "three_acts_verified": true,
+        "cleanup_complete": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:51:03.823+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_completed",
+      "status": "PASS",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "Containment demonstration 2",
+        "demonstration": 2,
+        "artifact": "evidence/local-verify/20261009T185013Z-a773c7eb210a/demo-2/76388a73cc34463d9e77305c247973a9.json",
+        "exit_status": 0,
+        "three_acts_verified": true,
+        "cleanup_complete": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:51:03.823+00:00",
+      "phase": "STATIC",
+      "event_type": "semgrep_sample_verification",
+      "status": "PASS",
+      "source": "semgrep",
+      "observed_evidence": {
+        "unsafe_findings": 2,
+        "secure_findings": 0,
+        "expected_rule_ids": [
+          "escape-room-canary-mount",
+          "escape-room-collector-network"
+        ],
+        "detected": [
+          "escape-room-canary-mount",
+          "escape-room-collector-network"
+        ]
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:51:03.824+00:00",
+      "phase": "STATIC",
+      "event_type": "semgrep_sample_verification",
+      "status": "PASS",
+      "source": "semgrep",
+      "observed_evidence": {
+        "unsafe_findings": 2,
+        "secure_findings": 0,
+        "expected_rule_ids": [
+          "escape-room-canary-mount",
+          "escape-room-collector-network"
+        ],
+        "detected": [
+          "escape-room-canary-mount",
+          "escape-room-collector-network"
+        ]
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:51:03.824+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "check_completed",
+      "status": "PASS",
+      "source": "local_verify",
+      "observed_evidence": {
+        "check": "Custom Semgrep rules",
+        "actual_scan_artifacts_verified": 2,
+        "secure_sample_clean": true,
+        "required_rules": [
+          "escape-room-collector-network",
+          "escape-room-canary-mount"
+        ]
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:51:03.838+00:00",
+      "phase": "LOCAL_VERIFY",
+      "event_type": "public_replay_exported",
+      "status": "PASS",
+      "source": "replay",
+      "observed_evidence": {
+        "runs": 2,
+        "destination": "web/evidence.json",
+        "sanitized": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "58b4a8be268448d28ebca70e2d8f3bc4",
+      "timestamp": "2026-10-09T18:51:03.839+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "PASS",
+      "source": "engine",
+      "observed_evidence": {
+        "checks": [
+          {
+            "check": "Existing virtualenv",
+            "status": "PASS",
+            "reason": "Verified"
+          },
+          {
+            "check": "Docker Desktop connectivity",
+            "status": "PASS",
+            "reason": "Verified"
+          },
+          {
+            "check": "ClickHouse DNS and verified HTTPS",
+            "status": "INCONCLUSIVE",
+            "reason": "Optional cloud check disabled; no connection attempted"
+          },
+          {
+            "check": "ClickHouse SELECT 1",
+            "status": "INCONCLUSIVE",
+            "reason": "Optional cloud check disabled; no connection attempted"
+          },
+          {
+            "check": "Semgrep CLI",
+            "status": "PASS",
+            "reason": "Verified"
+          },
+          {
+            "check": "Containment demonstration 1",
+            "status": "PASS",
+            "reason": "Verified"
+          },
+          {
+            "check": "Containment demonstration 2",
+            "status": "PASS",
+            "reason": "Verified"
+          },
+          {
+            "check": "Custom Semgrep rules",
+            "status": "PASS",
+            "reason": "Verified"
+          },
+          {
+            "check": "ClickHouse upload and event readback",
+            "status": "INCONCLUSIVE",
+            "reason": "Optional cloud check disabled; no connection attempted"
+          }
+        ],
+        "reason": "Two genuine Docker demonstrations verified; public replay exported. Semgrep verified.",
+        "exit_code": 0
+      },
+      "config_diff": {}
+    }
+  ]
+}

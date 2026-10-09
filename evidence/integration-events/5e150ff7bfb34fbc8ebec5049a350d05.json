@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "run_id": "5e150ff7bfb34fbc8ebec5049a350d05",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "artifact_run_id": "76388a73cc34463d9e77305c247973a9"
+  },
+  "events": [
+    {
+      "run_id": "5e150ff7bfb34fbc8ebec5049a350d05",
+      "timestamp": "2026-10-09T19:42:35.449+00:00",
+      "phase": "TELEMETRY",
+      "event_type": "clickhouse_connection_verified",
+      "status": "PASS",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "query": "SELECT 1",
+        "result": 1
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "5e150ff7bfb34fbc8ebec5049a350d05",
+      "timestamp": "2026-10-09T19:42:35.940+00:00",
+      "phase": "TELEMETRY",
+      "event_type": "telemetry_table_ready",
+      "status": "PASS",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "table": "escape_room_events"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "5e150ff7bfb34fbc8ebec5049a350d05",
+      "timestamp": "2026-10-09T19:42:36.935+00:00",
+      "phase": "TELEMETRY",
+      "event_type": "telemetry_ingestion_verified",
+      "status": "PASS",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "table": "escape_room_events",
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9",
+        "artifact_sha256": "ae06292bd96666f299162ed20a334572668c57dfc635e303c22f8c2d0d348758",
+        "events_verified": 80,
+        "run_status": "PASS",
+        "verification_scope": "three_act_demo"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "5e150ff7bfb34fbc8ebec5049a350d05",
+      "timestamp": "2026-10-09T19:42:37.316+00:00",
+      "phase": "INTEGRATION",
+      "event_type": "clickhouse_verified",
+      "status": "PASS",
+      "source": "clickhouse",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9",
+        "status": "PASS",
+        "timestamp": "2026-10-09T19:42:37.316+00:00",
+        "events_uploaded": 80,
+        "events_verified": 80,
+        "readback_verified": true,
+        "select_one": 1,
+        "table": "escape_room_events"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "5e150ff7bfb34fbc8ebec5049a350d05",
+      "timestamp": "2026-10-09T19:42:37.320+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9"
+      },
+      "config_diff": {}
+    }
+  ]
+}

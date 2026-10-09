@@ -1,0 +1,4 @@
+{
+  "network": "collector",
+  "mount_canary": true
+}

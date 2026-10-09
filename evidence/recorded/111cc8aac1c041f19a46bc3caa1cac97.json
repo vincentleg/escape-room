@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "run_id": "111cc8aac1c041f19a46bc3caa1cac97",
+  "status": "PASS",
+  "summary": {
+    "command": "gate",
+    "exit_code": 0,
+    "scope": "configuration_only"
+  },
+  "events": [
+    {
+      "run_id": "111cc8aac1c041f19a46bc3caa1cac97",
+      "timestamp": "2026-10-09T18:00:40.145+00:00",
+      "phase": "STATIC",
+      "event_type": "semgrep_unavailable",
+      "status": "INCONCLUSIVE",
+      "source": "semgrep",
+      "observed_evidence": {
+        "reason": "Semgrep CLI is not installed; static integration pending"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "111cc8aac1c041f19a46bc3caa1cac97",
+      "timestamp": "2026-10-09T18:00:40.145+00:00",
+      "phase": "GATE",
+      "event_type": "security_gate",
+      "status": "PASS",
+      "source": "gate",
+      "observed_evidence": {
+        "exit_code": 0,
+        "scope": "configuration_only",
+        "probes": null
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "111cc8aac1c041f19a46bc3caa1cac97",
+      "timestamp": "2026-10-09T18:00:40.146+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "PASS",
+      "source": "engine",
+      "observed_evidence": {
+        "command": "gate",
+        "exit_code": 0,
+        "scope": "configuration_only"
+      },
+      "config_diff": {}
+    }
+  ]
+}

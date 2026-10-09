@@ -1,0 +1,3 @@
+# Optional tooling only. The engine has no third-party Python dependencies.
+# Installation and compatibility validation are pending in the restricted build session.
+semgrep>=1.90,<2

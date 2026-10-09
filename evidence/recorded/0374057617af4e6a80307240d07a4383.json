@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "run_id": "0374057617af4e6a80307240d07a4383",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "three_acts_verified": false,
+    "reason": "Docker command failed; see command_completed evidence",
+    "semgrep": "INCONCLUSIVE",
+    "semgrep_pending": true,
+    "cleanup_complete": true,
+    "exit_code": 2
+  },
+  "events": [
+    {
+      "run_id": "0374057617af4e6a80307240d07a4383",
+      "timestamp": "2026-10-09T17:56:30.517+00:00",
+      "phase": "SETUP",
+      "event_type": "run_started",
+      "status": "PASS",
+      "source": "demo",
+      "observed_evidence": {
+        "scope": "Two controlled probes in disposable local Docker infrastructure",
+        "status_semantics": "Probe PASS=denied, FAIL=observed access, INCONCLUSIVE=unverified",
+        "evidence": "Actual command output; host-specific paths replaced by placeholders"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "0374057617af4e6a80307240d07a4383",
+      "timestamp": "2026-10-09T17:56:30.519+00:00",
+      "phase": "STATIC",
+      "event_type": "semgrep_unavailable",
+      "status": "INCONCLUSIVE",
+      "source": "semgrep",
+      "observed_evidence": {
+        "reason": "Semgrep CLI is not installed; static integration pending"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "0374057617af4e6a80307240d07a4383",
+      "timestamp": "2026-10-09T17:56:30.696+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "context",
+          "inspect"
+        ],
+        "started_at": "2026-10-09T17:56:30.522+00:00",
+        "finished_at": "2026-10-09T17:56:30.696+00:00",
+        "duration_ms": 174,
+        "exit_status": 0,
+        "stdout": "[\n    {\n        \"Name\": \"desktop-linux\",\n        \"Metadata\": {\n            \"Description\": \"Docker Desktop\",\n            \"GODEBUG\": \"x509negativeserial=1\",\n            \"otel\": {\n                \"OTEL_EXPORTER_OTLP_ENDPOINT\": \"unix://<home>/.docker/run/user-analytics.otlp.grpc.sock\"\n            }\n        },\n        \"Endpoints\": {\n            \"docker\": {\n                \"Host\": \"unix://<docker-socket>\",\n                \"SkipTLSVerify\": false\n            }\n        },\n        \"TLSMaterial\": {},\n        \"Storage\": {\n            \"MetadataPath\": \"<home>/.docker/contexts/meta/fe9c6bd7a66301f49ca9b6a70b217107cd1284598bfc254700c989b916da791e\",\n            \"TLSPath\": \"<home>/.docker/contexts/tls/fe9c6bd7a66301f49ca9b6a70b217107cd1284598bfc254700c989b916da791e\"\n        }\n    }\n]\n",
+        "stderr": "",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "0374057617af4e6a80307240d07a4383",
+      "timestamp": "2026-10-09T17:56:30.724+00:00",
+      "phase": "INFRASTRUCTURE",
+      "event_type": "command_completed",
+      "status": "INCONCLUSIVE",
+      "source": "docker",
+      "observed_evidence": {
+        "command": [
+          "docker",
+          "--host",
+          "unix://<docker-socket>",
+          "version",
+          "--format",
+          "{{json .Server}}"
+        ],
+        "started_at": "2026-10-09T17:56:30.697+00:00",
+        "finished_at": "2026-10-09T17:56:30.724+00:00",
+        "duration_ms": 27,
+        "exit_status": 1,
+        "stdout": "null\n",
+        "stderr": "permission denied while trying to connect to the docker API at unix://<docker-socket>\n",
+        "timed_out": false,
+        "error": ""
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "0374057617af4e6a80307240d07a4383",
+      "timestamp": "2026-10-09T17:56:30.726+00:00",
+      "phase": "CLEANUP",
+      "event_type": "cleanup_completed",
+      "status": "PASS",
+      "source": "docker",
+      "observed_evidence": {
+        "only_run_owned_resources": true,
+        "complete": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "0374057617af4e6a80307240d07a4383",
+      "timestamp": "2026-10-09T17:56:30.726+00:00",
+      "phase": "SETUP",
+      "event_type": "execution_error",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "reason": "Docker command failed; see command_completed evidence"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "0374057617af4e6a80307240d07a4383",
+      "timestamp": "2026-10-09T17:56:30.726+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "three_acts_verified": false,
+        "reason": "Docker command failed; see command_completed evidence",
+        "semgrep": "INCONCLUSIVE",
+        "semgrep_pending": true,
+        "cleanup_complete": true,
+        "exit_code": 2
+      },
+      "config_diff": {}
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "run_id": "76388a73cc34463d9e77305c247973a9",
+  "source_sha256": "ae06292bd96666f299162ed20a334572668c57dfc635e303c22f8c2d0d348758",
+  "openai": {
+    "status": "INCONCLUSIVE"
+  },
+  "clickhouse": {
+    "status": "PASS",
+    "timestamp": "2026-10-09T19:42:37.316+00:00",
+    "events_uploaded": 80,
+    "events_verified": 80,
+    "readback_verified": true,
+    "select_one": 1,
+    "table": "escape_room_events"
+  },
+  "github": {
+    "status": "PASS",
+    "timestamp": "2026-10-09T19:30:56.340+00:00",
+    "repository": "vincentleg/escape-room",
+    "issue_number": 2,
+    "issue_url": "https://github.com/vincentleg/escape-room/issues/2",
+    "readback_verified": true
+  },
+  "github_attempted_at": "2026-10-09T19:30:54.596+00:00"
+}

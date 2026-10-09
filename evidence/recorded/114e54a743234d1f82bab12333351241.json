@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "run_id": "114e54a743234d1f82bab12333351241",
+  "status": "FAIL",
+  "summary": {
+    "command": "gate",
+    "exit_code": 1,
+    "scope": "configuration_and_runtime"
+  },
+  "events": [
+    {
+      "run_id": "114e54a743234d1f82bab12333351241",
+      "timestamp": "2026-10-09T18:00:40.051+00:00",
+      "phase": "STATIC",
+      "event_type": "semgrep_unavailable",
+      "status": "INCONCLUSIVE",
+      "source": "semgrep",
+      "observed_evidence": {
+        "reason": "Semgrep CLI is not installed; static integration pending"
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "114e54a743234d1f82bab12333351241",
+      "timestamp": "2026-10-09T18:00:40.051+00:00",
+      "phase": "GATE",
+      "event_type": "security_gate",
+      "status": "FAIL",
+      "source": "gate",
+      "observed_evidence": {
+        "exit_code": 1,
+        "scope": "configuration_and_runtime",
+        "probes": null
+      },
+      "config_diff": {
+        "network": {
+          "approved": "none",
+          "observed": "collector"
+        },
+        "mount_canary": {
+          "approved": false,
+          "observed": true
+        }
+      }
+    },
+    {
+      "run_id": "114e54a743234d1f82bab12333351241",
+      "timestamp": "2026-10-09T18:00:40.051+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "FAIL",
+      "source": "engine",
+      "observed_evidence": {
+        "command": "gate",
+        "exit_code": 1,
+        "scope": "configuration_and_runtime"
+      },
+      "config_diff": {}
+    }
+  ]
+}

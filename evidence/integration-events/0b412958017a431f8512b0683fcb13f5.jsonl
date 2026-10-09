@@ -1,0 +1,1 @@
+{"config_diff": {}, "event_type": "run_completed", "observed_evidence": {"artifact_run_id": "76388a73cc34463d9e77305c247973a9"}, "phase": "SUMMARY", "run_id": "0b412958017a431f8512b0683fcb13f5", "source": "engine", "status": "INCONCLUSIVE", "timestamp": "2026-10-09T19:36:28.582+00:00"}

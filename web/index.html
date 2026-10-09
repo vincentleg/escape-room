@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c0e10">
+  <meta name="description" content="Autonomous Containment & Recovery for AI Agents. Watch a verified, recorded security drill: detect drift, prove the incident, restore containment, and retest.">
+  <meta property="og:title" content="ESCAPE ROOM — Prove you can contain it.">
+  <meta property="og:description" content="Autonomous Containment & Recovery for AI Agents. Real Docker probes. Evidence-backed recovery.">
+  <title>ESCAPE ROOM — Autonomous Containment & Recovery</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip-link" href="#drill">Skip to crisis drill</a>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="wordmark" href="#" aria-label="Escape Room home"><svg viewBox="0 0 34 36" aria-hidden="true"><path d="M5 7 17 1 29 7v22l-12 6L5 29V7Z M17 1v34 M5 7l12 6 12-6 M17 13v22"/></svg><span>ESCAPE ROOM<span class="wordmark-sub">AUTONOMOUS SECURITY SYSTEMS</span></span></a>
+      <nav aria-label="Primary navigation"><a href="#drill">The drill</a><a href="#evidence">The evidence</a><a href="#architecture">How it works <span>↗</span></a></nav>
+      <span class="header-tag"><span class="small-dot"></span> LOCAL ENGINE. PUBLIC PROOF.</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="headline">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="crosshair">+</span> AUTONOMOUS CONTAINMENT &amp; RECOVERY FOR AI AGENTS</p>
+          <h1 id="headline">Before an AI agent<br class="desktop-break"> escapes, <span>prove you<br class="desktop-break"> can contain it.</span></h1>
+          <p class="hero-description">Build AI incident readiness before it is needed. ESCAPE ROOM detects permission drift, verifies a boundary failure, and restores containment—with evidence at every step.</p>
+          <a class="hero-link" href="#drill">ENTER THE CONTAINMENT CHAMBER <span>↓</span></a>
+        </div>
+        <aside class="hero-aside" aria-label="System principles">
+          <div class="vertical-rule"></div><span class="aside-index">ER / 001</span>
+          <p>Trust is a starting point.<br><strong>Proof is the standard.</strong></p>
+          <div class="principle"><span>01</span><div><strong>Observe the failure.</strong><small>Real probes. Controlled targets.</small></div></div>
+          <div class="principle"><span>02</span><div><strong>Restore the boundary.</strong><small>One allowlisted corrective action.</small></div></div>
+          <div class="principle"><span>03</span><div><strong>Prove the recovery.</strong><small>The same probes. Run again.</small></div></div>
+        </aside>
+      </section>
+
+      <section class="drill-section" id="drill" aria-labelledby="drill-heading">
+        <div class="section-caption"><span><span class="orange-square"></span> INTERACTIVE CONTAINMENT DRILL</span><span>CONTROLLED ENVIRONMENT / NO REAL SECRETS</span></div>
+        <div class="chamber" data-state="UNVERIFIED" id="chamber">
+          <div class="chamber-header">
+            <div><h2 id="drill-heading">The containment chamber<span class="registered">[01]</span></h2><p>One agent. Two boundaries. A recovery that has to prove itself.</p></div>
+            <button class="crisis-button" id="crisis-button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m11 1-7 10h5l-1 8 8-11h-5l0-7Z"/></svg> LAUNCH CRISIS <span>↗</span></button>
+          </div>
+          <div class="replay-disclosure"><span><span class="record-dot"></span> RECORDED VERIFICATION <span class="divider">/</span> NOT LIVE EXECUTION</span><span id="recording-state">AWAITING A VERIFIED RECORDING</span></div>
+          <div class="chamber-main">
+            <div class="visual-panel">
+              <div class="visual-topline"><span>DISPOSABLE SANDBOX</span><span class="chamber-code">ER–SANDBOX / 01</span></div>
+              <div class="scene" id="scene">
+                <svg class="containment-svg" viewBox="0 0 700 460" role="img" aria-labelledby="scene-title scene-description">
+                  <title id="scene-title">AI agent inside a controlled containment boundary</title><desc id="scene-description">A schematic chamber connects to a controlled network collector and a synthetic canary. Its colors change only with recorded evidence.</desc>
+                  <defs>
+                    <pattern id="floor-grid" width="44" height="44" patternUnits="userSpaceOnUse" patternTransform="translate(350 100) rotate(30) skewX(-30) scale(1 .65)"><path d="M 44 0 L 0 0 0 44" fill="none" stroke="#899397" stroke-opacity=".13" stroke-width="1"/></pattern>
+                    <radialGradient id="floor-glow"><stop offset="0" stop-color="#ed8158" stop-opacity=".10"/><stop offset="1" stop-color="#ed8158" stop-opacity="0"/></radialGradient>
+                    <linearGradient id="wall-glow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#738089" stop-opacity=".08"/><stop offset="1" stop-color="#738089" stop-opacity=".02"/></linearGradient>
+                    <filter id="core-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>
+                  </defs>
+                  <ellipse cx="350" cy="280" rx="290" ry="160" fill="url(#floor-glow)"/>
+                  <path d="M0 190 350 10 700 190 700 340 350 460 0 340Z" fill="url(#floor-grid)"/>
+                  <path class="floor-outline" d="m110 314 240-132 240 132-240 132Z"/>
+                  <g class="room-walls"><path d="m190 135 160 92v165l-160-92Z"/><path d="m350 227 160-92v165l-160 92Z"/><path d="m190 135 160-92 160 92-160 92Z"/></g>
+                  <g class="boundary-lines"><path d="m190 135 160-92 160 92v165l-160 92-160-92V135Z"/><path d="m190 135 160 92 160-92M350 227v165M190 300l160-92 160 92M350 43v165"/></g>
+                  <g class="boundary-corners"><path d="M190 164v-29l25-14M485 121l25 14v29M190 271v29l25 14M485 314l25-14v-29M325 378l25 14 25-14M325 57l25-14 25 14"/></g>
+                  <g class="scan-plane"><path d="m192 202 158-91 158 91-158 91Z"/></g>
+                  <g class="network-route"><path class="probe-route" d="M380 243 454 285 585 209"/><circle class="route-dot" cx="454" cy="285" r="4"/><path class="route-block" d="m465 272 10 6m-10 0 10-6"/></g>
+                  <g class="secret-route"><path class="probe-route" d="m320 258-92 53-104-60"/><circle class="route-dot" cx="228" cy="311" r="4"/><path class="route-block" d="m179 277 10 6m-10 0 10-6"/></g>
+                  <g class="agent-core">
+                    <path class="core-aura" d="m350 185 43 25v50l-43 25-43-25v-50Z" filter="url(#core-glow)"/>
+                    <path class="core-top" d="m350 188 40 23-40 23-40-23Z"/><path class="core-left" d="m310 211 40 23v47l-40-23Z"/><path class="core-right" d="m350 234 40-23v47l-40 23Z"/>
+                    <path class="core-detail" d="m326 221 24 14 24-14M350 235v28"/><circle cx="350" cy="210" r="4" class="core-eye"/>
+                  </g>
+                  <g class="scene-label agent-label"><path d="M350 292v28"/><text x="350" y="338" text-anchor="middle">AI AGENT</text><text x="350" y="355" text-anchor="middle" class="sub-label">untrusted workload</text></g>
+                  <g class="endpoint" transform="translate(585 183)"><circle r="27"/><path d="M-10-8h20v16h-20ZM-5 13H5M0 8v5"/><circle class="endpoint-light" cx="15" cy="-20" r="4"/><text x="0" y="47" text-anchor="middle">COLLECTOR</text><text x="0" y="63" text-anchor="middle" class="sub-label">controlled network</text></g>
+                  <g class="endpoint" transform="translate(111 225)"><circle r="27"/><path d="M-9-3H9v14H-9ZM-5-3v-5a5 5 0 0 1 10 0v5M0 2v4"/><circle class="endpoint-light" cx="-15" cy="-20" r="4"/><text x="0" y="48" text-anchor="middle">CANARY</text><text x="0" y="64" text-anchor="middle" class="sub-label">synthetic secret</text></g>
+                  <text x="350" y="22" text-anchor="middle" class="boundary-caption">SANDBOX BOUNDARY</text>
+                </svg>
+                <div class="scene-state"><span class="state-dot"></span><span id="scene-state-label">EVIDENCE PENDING</span></div>
+                <div class="stage-banner" id="stage-banner" hidden><span class="stage-replay" id="stage-replay">RECORDED REPLAY</span><strong id="stage-name">SECURE</strong><span class="stage-decision" id="stage-decision"></span></div>
+              </div>
+              <div class="probe-strip"><div><span class="probe-indicator" id="network-dot"></span><span>NETWORK EGRESS</span><strong id="network-status">UNVERIFIED</strong></div><div><span class="probe-indicator" id="secret-dot"></span><span>CANARY ACCESS</span><strong id="secret-status">UNVERIFIED</strong></div></div>
+            </div>
+            <aside class="mission-panel">
+              <div class="mission-top"><span>MISSION CONTROL</span><span id="mission-counter">00 / 06</span></div>
+              <div class="mission-status"><span class="status-kicker" id="status-kicker">PROOF BEFORE PROMISES</span><h3 id="state-title">Ready for<br>the real thing.</h3><p id="state-description">The engine runs locally. This chamber replays its verified evidence. No successful recording is bundled yet.</p></div>
+              <div class="mission-tabs" role="tablist" aria-label="Mission details"><button role="tab" aria-selected="true" aria-controls="event-panel" id="events-tab">Event feed</button><button role="tab" aria-selected="false" aria-controls="policy-panel" id="policy-tab" tabindex="-1">Baseline policy</button></div>
+              <div class="event-feed" role="tabpanel" id="event-panel" aria-labelledby="events-tab"><div class="empty-event"><span class="event-cross">+</span><p>No claim without a record.<small>Load a verified run to reveal the event trail.</small></p></div></div>
+              <div class="policy-panel" role="tabpanel" id="policy-panel" aria-labelledby="policy-tab" hidden><div class="code-title">APPROVED CONFIGURATION</div><pre><span>network</span>: none
+<span>mount_canary</span>: false</pre><p>The sole allowed correction restores this baseline. Verification uses fresh disposable containers.</p><div class="policy-foot">IMMUTABLE BASELINE <span>⌁</span></div></div>
+              <div class="mission-bottom"><span class="small-dot"></span> DETERMINISTIC RESPONSE. NO LLM SHELL ACCESS.</div>
+            </aside>
+          </div>
+          <div class="timeline" aria-label="Recorded state progression" id="timeline">
+            <button data-frame="0" disabled><span class="step-number">01</span><span class="step-label">SECURE</span><span class="step-track"></span></button>
+            <button data-frame="1" disabled><span class="step-number">02</span><span class="step-label">DRIFT DETECTED</span><span class="step-track"></span></button>
+            <button data-frame="2" disabled><span class="step-number">03</span><span class="step-label">INCIDENT CONFIRMED</span><span class="step-track"></span></button>
+            <button data-frame="3" disabled><span class="step-number">04</span><span class="step-label">REMEDIATING</span><span class="step-track"></span></button>
+            <button data-frame="4" disabled><span class="step-number">05</span><span class="step-label">VERIFYING</span><span class="step-track"></span></button>
+            <button data-frame="5" disabled><span class="step-number">06</span><span class="step-label">RECOVERED</span><span class="step-track"></span></button>
+          </div>
+          <div class="verdict" id="verdict" hidden aria-live="polite"><div class="verdict-head"><span class="verdict-kicker">FINAL VERDICT · RECORDED RUN <span id="verdict-run"></span></span><h3>VERIFIED SAFE</h3><p>The AI agent escaped its boundary, the agent detected it, restored the approved configuration on its own, and proved the recovery with the same probes.</p></div><dl class="verdict-grid" id="verdict-grid"></dl><button class="crisis-button" id="replay-button">↺ REPLAY CRISIS</button></div>
+          <div class="replay-controls"><span id="replay-caption">REAL EXECUTION → SANITIZED RECORD → INTERACTIVE REPLAY</span><div><button id="pause-button" disabled aria-label="Pause recorded replay">Ⅱ Pause</button><button id="speed-button" aria-label="Change replay speed">1× speed</button><button id="reset-button" disabled>↺ Reset</button></div></div>
+        </div>
+        <div class="verification-strip"><span><span class="small-dot neutral" id="docker-indicator"></span><strong>Docker</strong> <span id="docker-proof">Local engine</span></span><span><strong>Semgrep</strong> <span id="semgrep-proof">Static detection</span></span><span><strong>ClickHouse</strong> <span id="clickhouse-proof">Ingestion not verified</span></span><span class="verification-note">PUBLIC REPLAY HAS NO ACCESS TO YOUR RUNTIME <span>↗</span></span></div>
+        <div class="integration-grid" aria-label="Recorded integration receipts">
+          <article><div class="integration-heading"><h3>OpenAI incident analysis</h3><span id="openai-integration-status">NOT VERIFIED</span></div><div id="openai-integration-body"><p>No verified API response loaded.</p></div></article>
+          <article><div class="integration-heading"><h3>ClickHouse observability</h3><span id="clickhouse-integration-status">NOT VERIFIED</span></div><div id="clickhouse-integration-body"><p>No verified cloud receipt loaded.</p></div></article>
+          <article><div class="integration-heading"><h3>Autonomous incident report</h3><span id="github-integration-status">NOT VERIFIED</span></div><div id="github-integration-body"><p>No verified GitHub issue loaded.</p></div></article>
+        </div>
+      </section>
+
+      <section class="evidence-section" id="evidence" aria-labelledby="evidence-title">
+        <div class="section-header"><div><p class="eyebrow">THE RECEIPTS, NOT THE REASSURANCE</p><h2 id="evidence-title">Every claim has a record.</h2></div><button class="outline-button" id="download-evidence" disabled>Download evidence <span>↓</span></button></div>
+        <div class="evidence-summary"><div><span class="metric-label">VERIFIED LOCAL RUNS</span><strong id="verified-runs">0<span> / 2</span></strong></div><div><span class="metric-label">CONTROLLED PROBE TYPES</span><strong>2<span> controlled probes</span></strong></div><div><span class="metric-label">RECOVERY IN RECORDING</span><strong id="recovery-duration">—<span> awaiting proof</span></strong></div><div><span class="metric-label">CI SECURITY GATE</span><strong id="gate-proof">—<span> not verified</span></strong></div></div>
+        <div class="ledger-heading"><span>PROBE LEDGER</span><div><label for="run-select">RECORDING</label><select id="run-select" aria-label="Select recorded run" disabled><option>No verified recording</option></select></div></div>
+        <div class="table-scroll"><table><thead><tr><th>ACT</th><th>CONTROLLED NETWORK</th><th>SYNTHETIC CANARY</th><th>POLICY / GATE</th></tr></thead><tbody id="probe-ledger"><tr><td><span class="table-number">01</span> SECURE</td><td>Awaiting evidence</td><td>Awaiting evidence</td><td>Not verified</td></tr><tr><td><span class="table-number">02</span> DRIFT</td><td>Awaiting evidence</td><td>Awaiting evidence</td><td>Not verified</td></tr><tr><td><span class="table-number">03</span> RECOVERY</td><td>Awaiting evidence</td><td>Awaiting evidence</td><td>Not verified</td></tr></tbody></table></div>
+        <details class="static-findings"><summary>Semgrep · static detection <span id="findings-status">AWAITING REAL CLI FINDINGS</span></summary><div id="findings-body"><p>Real rule IDs, files, and source lines appear here when a verified recording includes Semgrep output.</p></div></details>
+        <div class="provenance"><span id="provenance">No successful recording has been published. Nothing in this interface asserts live containment.</span><button id="import-button">Load a recording <span>↗</span></button></div>
+        <input id="evidence-file" type="file" accept="application/json,.json" hidden>
+      </section>
+
+      <section class="architecture-section" id="architecture" aria-labelledby="architecture-title">
+        <div class="section-header"><div><p class="eyebrow">AN AUTONOMOUS LOOP, WITH BOUNDARIES</p><h2 id="architecture-title">Assume drift.<br>Engineer the response.</h2></div><p>Detection is a signal. Recovery is a claim.<br>The same runtime tests connect the two.</p></div>
+        <div class="architecture-grid"><article><span class="architecture-index">01 / DETECT</span><div class="architecture-icon">[ ≠ ]</div><h3>Find the change.</h3><p>Compare the sandbox to its approved baseline. Custom Semgrep rules flag unsafe configuration before the runtime probes begin.</p><span class="technology-label">POLICY DIFF + SEMGREP</span></article><article><span class="architecture-index">02 / VERIFY</span><div class="architecture-icon">[ ↗ ]</div><h3>Prove the exposure.</h3><p>A controlled collector receipt proves network access. Reading the exact fake canary proves file exposure. Positive controls rule out broken tests.</p><span class="technology-label">REAL DOCKER PROBES</span></article><article><span class="architecture-index">03 / RECOVER</span><div class="architecture-icon">[ ↺ ]</div><h3>Close the loop.</h3><p>Restore only the allowlisted configuration. Rerun both probes. Declare recovery only after the boundary holds again.</p><span class="technology-label">AUTONOMOUS STATE MACHINE</span></article></div>
+        <p class="scope-note">A precise claim, deliberately bounded: two containment controls against disposable local targets. This is not a universal sandbox security certification.</p>
+      </section>
+    </main>
+    <footer><a class="footer-brand" href="#">ESCAPE ROOM<span>PROOF OVER PROMISES.</span></a><p>Autonomous Containment &amp; Recovery for AI Agents</p><a href="#drill">Back to the chamber ↑</a></footer>
+  </div>
+  <dialog id="evidence-dialog" aria-labelledby="dialog-title"><button class="dialog-close" id="close-dialog" aria-label="Close dialog">×</button><span class="eyebrow">THE EVIDENCE COMES FIRST</span><h2 id="dialog-title">A real drill.<br>A real recording.</h2><p>No successful containment recording has been published yet. Run the two local Docker demonstrations, then load the sanitized evidence. This page will never turn missing evidence into a recovered incident.</p><div class="command-box"><code>./scripts/verify_docker.sh</code><button id="copy-command" aria-label="Copy local verification command">Copy</button></div><p class="dialog-note">Run from the project in your normal Terminal. No ClickHouse dependency. The command exports <code>web/evidence.json</code> for this replay.</p><button class="crisis-button dialog-import" id="dialog-import">Load verified evidence <span>↗</span></button><p class="dialog-privacy">Files stay in your browser. No upload. No Docker connection.</p></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="sr-only" id="state-announcement" aria-live="polite"></div>
+</body>
+</html>

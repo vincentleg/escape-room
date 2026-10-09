@@ -1,0 +1,13 @@
+rules:
+  - id: escape-room-collector-network
+    languages: [yaml]
+    severity: ERROR
+    message: Agent is attached to the controlled collector network instead of network none.
+    pattern: |
+      network: collector
+  - id: escape-room-canary-mount
+    languages: [yaml]
+    severity: ERROR
+    message: Agent exposes the synthetic canary directory; the approved baseline has no mount.
+    pattern: |
+      mount_canary: true

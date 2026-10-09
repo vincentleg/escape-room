@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "run_id": "61867193cf2b47f0adead8a8fd2cc6f9",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "scope": "environment_access_diagnostics"
+  },
+  "events": [
+    {
+      "run_id": "61867193cf2b47f0adead8a8fd2cc6f9",
+      "timestamp": "2026-10-09T18:19:01.744+00:00",
+      "phase": "SETUP",
+      "event_type": "network_diagnostic",
+      "status": "INCONCLUSIVE",
+      "source": "socket",
+      "observed_evidence": {
+        "target": "clickhouse",
+        "dns_resolved": false,
+        "error_type": "gaierror",
+        "errno": 8
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "61867193cf2b47f0adead8a8fd2cc6f9",
+      "timestamp": "2026-10-09T18:19:01.745+00:00",
+      "phase": "SETUP",
+      "event_type": "network_diagnostic",
+      "status": "INCONCLUSIVE",
+      "source": "socket",
+      "observed_evidence": {
+        "target": "python_package_index",
+        "dns_resolved": false,
+        "error_type": "gaierror",
+        "errno": 8
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "61867193cf2b47f0adead8a8fd2cc6f9",
+      "timestamp": "2026-10-09T18:19:01.871+00:00",
+      "phase": "SETUP",
+      "event_type": "docker_socket_diagnostic",
+      "status": "INCONCLUSIVE",
+      "source": "socket",
+      "observed_evidence": {
+        "target": "local_docker_socket",
+        "connected": false,
+        "file_writable_by_user": false,
+        "error_type": "PermissionError",
+        "errno": 1
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "61867193cf2b47f0adead8a8fd2cc6f9",
+      "timestamp": "2026-10-09T18:19:01.871+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "scope": "environment_access_diagnostics"
+      },
+      "config_diff": {}
+    }
+  ]
+}

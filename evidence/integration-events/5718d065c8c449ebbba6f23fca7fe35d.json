@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "run_id": "5718d065c8c449ebbba6f23fca7fe35d",
+  "status": "INCONCLUSIVE",
+  "summary": {
+    "artifact_run_id": "76388a73cc34463d9e77305c247973a9"
+  },
+  "events": [
+    {
+      "run_id": "5718d065c8c449ebbba6f23fca7fe35d",
+      "timestamp": "2026-10-09T19:30:56.340+00:00",
+      "phase": "INTEGRATION",
+      "event_type": "github_verified",
+      "status": "PASS",
+      "source": "github",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9",
+        "status": "PASS",
+        "timestamp": "2026-10-09T19:30:56.340+00:00",
+        "repository": "vincentleg/escape-room",
+        "issue_number": 2,
+        "issue_url": "https://github.com/vincentleg/escape-room/issues/2",
+        "readback_verified": true
+      },
+      "config_diff": {}
+    },
+    {
+      "run_id": "5718d065c8c449ebbba6f23fca7fe35d",
+      "timestamp": "2026-10-09T19:30:56.343+00:00",
+      "phase": "SUMMARY",
+      "event_type": "run_completed",
+      "status": "INCONCLUSIVE",
+      "source": "engine",
+      "observed_evidence": {
+        "artifact_run_id": "76388a73cc34463d9e77305c247973a9"
+      },
+      "config_diff": {}
+    }
+  ]
+}
